@@ -1,0 +1,55 @@
+.panelmenu-wrapper .p-panelmenu-header-icon,
+.panelmenu-wrapper .p-panelmenu-item-icon {
+  border: 1px solid #d3d3d3 !important;
+  background: white;
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.panelmenu-wrapper .p-panelmenu-item-link {
+  border-radius: 6px;
+}
+
+.panelmenu-wrapper .p-panelmenu-panel {
+  border: none;
+  padding: 0;
+}
+
+.panelmenu-wrapper .p-panelmenu {
+  gap: 4px;
+}
+
+.panelmenu-wrapper .active-menu-item,
+.panelmenu-wrapper .active-submenu-item {
+  border-right: goldenrod 3px solid !important;
+  border-radius: 6px;
+  color: black;
+}
+
+.panelmenu-wrapper .active-menu-item .p-panelmenu-header-icon,
+.panelmenu-wrapper .active-submenu-item .p-panelmenu-header-icon {
+  color: black;
+}
+
+.panelmenu-wrapper .p-panelmenu-submenu-icon:dir(rtl) {
+  transform: rotate(90deg) !important;
+}
+
+.panelmenu-wrapper .p-panelmenu-header-active .p-panelmenu-submenu-icon:dir(rtl) {
+  transform: rotate(180deg) !important;
+}
+
+.panelmenu-wrapper .p-panelmenu-header-link {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.panelmenu-wrapper .p-panelmenu-submenu-icon {
+  position: absolute;
+  left: 12px;
+}

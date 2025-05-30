@@ -1,0 +1,34 @@
+@font-face {
+  font-family: Sans;
+  font-style: normal;
+  font-weight: normal;
+  src: url('../fonts/Sans/eot/SansWeb.eot');
+  src: url('../fonts/Sans/eot/SansWeb.eot') format('embedded-opentype'),
+  url('../fonts/Sans/woff/SansWeb.woff') format('woff'),
+  url('../fonts/Sans/woff2/SansWeb.woff2') format('woff2'),
+  url('../fonts/Sans/ttf/SansWeb.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: SansBold;
+  font-weight: bold;
+  src: url('../fonts/Sans/eot/SansWeb_Bold.eot');
+  src: url('../fonts/Sans/eot/SansWeb_Bold.eot') format('embedded-opentype'),
+  url('../fonts/Sans/woff/SansWeb_Bold.woff') format('woff'),
+  url('../fonts/Sans/woff2/SansWeb_Bold.woff2') format('woff2'),
+  url('../fonts/Sans/ttf/SansWeb_Bold.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: SansLight;
+  font-style: normal;
+  font-weight: normal;
+  src: url('../fonts/Sans/eot/SansWeb_Light.eot');
+  src: url('../fonts/Sans/eot/SansWeb_Light.eot') format('embedded-opentype'),
+  url('../fonts/Sans/woff/SansWeb_Light.woff') format('woff'),
+  url('../fonts/Sans/woff2/SansWeb_Light.woff2') format('woff2'),
+  url('../fonts/Sans/ttf/SansWeb_Light.ttf') format('truetype');
+  font-display: swap;
+}
