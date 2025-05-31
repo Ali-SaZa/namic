@@ -386,6 +386,10 @@ class ApiRepository {
   resetPriceGroup(data={}){
     return this.http.post('userPrices/resetByGroupId.php', data)
   }
+
+  getTotalSummaryDetail(data={}){
+    return this.http.post('balance/totalSummaryDetail.php', data)
+  }
 }
 
 const repository = new ApiRepository();

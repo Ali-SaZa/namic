@@ -1,7 +1,7 @@
 <template>
   <template v-if="visiblePrices.length > 0">
     <div class="flex gap-4 space-y-2" v-for="price in visiblePrices" :key="price.id">
-      <div class="flex-1 mt-4">
+      <div class="flex-1" :class="editable?'mt-4':'mt-2'">
         <div class="text-center mb-2">سود</div>
         <div class="shadow rounded-lg flex justify-between items-center bg-base p-2">
           <Button

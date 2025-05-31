@@ -17,15 +17,24 @@
     <Divider />
     <div class="flex justify-between">
       سود قطعی
-      <span v-format-number="definiteProfit" class="text-green-500" />
+      <span v-format-number="{ value: definiteProfit, minDigit: 0, maxDigit: 0 }"
+            dir="ltr"
+            :class="definiteProfit > 0 ? 'text-green-500' : definiteProfit < 0?'text-red':''" />
     </div>
     <div class="flex justify-between mt-1">
       سود مازاد
-      <span v-format-number="additionalProfit" class="text-green-500" />
+      <span v-format-number="{ value: additionalProfit, minDigit: 0, maxDigit: 0 }"
+            dir="ltr"
+            :class="additionalProfit > 0 ? 'text-green-500' : additionalProfit < 0?'text-red':''" />
     </div>
     <Divider />
     <div class="flex items-center justify-between">
-      <i class="fa-solid fa-scale-balanced" />
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-scale-balanced" />
+        <span v-format-number="{ value: definiteProfit+additionalProfit, minDigit: 0, maxDigit: 0 }"
+              dir="ltr"
+              :class="definiteProfit+additionalProfit > 0 ? 'text-green-500' : definiteProfit+additionalProfit < 0?'text-red':''" />
+      </div>
       <Button :icon="showMore?'pi pi-angle-up':'pi pi-angle-down'" severity="info" size="small"
               variant="outlined"
               @click="showMore = !showMore"
@@ -51,7 +60,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import TypeIcon from './TypeIcon.vue';
+import TypeIcon from './TypeIcon.vue'
 
 const props = defineProps({
   type: {
