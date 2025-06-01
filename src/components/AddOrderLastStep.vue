@@ -8,7 +8,7 @@
   >
     <template #header>
       <div class="flex items-center w-full font-bold text-xl gap-1">
-        <TypeIcon :type="type"/>
+        <TypeIcon :type="type" />
         {{ isBuy ? 'خرید' : 'فروش' }}
         {{ ' ' + itemName }}
       </div>
@@ -16,48 +16,48 @@
     <div class="rounded-lg shadow bg-gray-50 p-4 mt-2">
       <template v-if="state === 3">
         <div class="w-full flex flex-col gap-2 items-center justify-center ">
-          <i class="fa fa-check-circle text-green-500 text-6xl"/>
+          <i class="fa fa-check-circle text-green-500 text-6xl" />
           <p>
             درخواست شما تایید شد
           </p>
         </div>
         <div class="grid grid-cols-3 justify-between mt-2">
           <div>
-            <i class="fa fa-tag"/>
+            <i class="fa fa-tag" />
             فی
           </div>
-          <div class="text-center" v-format-number="orderPrice"/>
+          <div class="text-center" v-format-number="orderPrice" />
           <div class="text-left">ریال</div>
         </div>
         <div class="grid grid-cols-3 justify-between mt-2">
           <template v-if="type ===1">
             <div>
-              <i class="fa fa-weight-hanging"/>
+              <i class="fa fa-weight-hanging" />
               وزن
             </div>
-            <div class="text-center" v-format-number="count"/>
+            <div class="text-center" v-format-number="count" />
             <div class="text-left">گرم</div>
           </template>
           <template v-else>
             <div>
-              <i class="fa fa-layer-group"/>
+              <i class="fa fa-layer-group" />
               تعداد
             </div>
-            <div class="text-center" v-format-number="count"/>
+            <div class="text-center" v-format-number="count" />
             <div class="text-left">عدد</div>
           </template>
         </div>
         <div class="grid grid-cols-3 justify-between mt-2">
           <div>
-            <i class="fa fa-money-bill-1"/>
+            <i class="fa fa-money-bill-1" />
             مبلغ
           </div>
-          <div class="text-center" v-format-number="sum"/>
+          <div class="text-center" v-format-number="sum" />
           <div class="text-left">ریال</div>
         </div>
         <div class="grid grid-cols-2 justify-between mt-2">
           <div>
-            <i class="fa fa-calendar-alt"/>
+            <i class="fa fa-calendar-alt" />
             زمان تایید
           </div>
           <div dir="ltr">
@@ -85,80 +85,92 @@
           </template>
         </div>
       </template>
+      <template v-if="state === 0">
+        <div class="w-full flex flex-col gap-2 items-center justify-center ">
+          <i class="fa-solid fa-info-circle text-yellow-500 text-6xl"></i>
+          <p>
+            درخواست شما
+            <span class="font-bold text-yellow-500">
+                بدون پاسخ
+              </span>
+            ماند
+          </p>
+        </div>
+      </template>
     </div>
     <div class="flex gap-2 mt-2 items-center justify-end">
       <Button size="small" severity="warn" label="بستن" @click="localVisible = false" icon-pos="right"
-              icon="fa fa-close"/>
+              icon="fa fa-close" />
       <Button size="small" severity="info" label="تکرار درخواست" @click="repeat" icon-pos="right"
-              v-if="state === 2"
-              icon="fa fa-repeat"/>
+              v-if="state === 2 || state === 0"
+              icon="fa fa-repeat" />
     </div>
   </Dialog>
 </template>
 
 <script setup>
-import { computed, inject } from 'vue';
-import TypeIcon from '@/components/TypeIcon.vue';
+import { computed, inject } from 'vue'
+import TypeIcon from '@/components/TypeIcon.vue'
 
-const dateTime = inject('dateTime');
+const dateTime = inject('dateTime')
 
-const emit = defineEmits(['update:isOpen', 'repeat']);
+const emit = defineEmits(['update:isOpen', 'repeat'])
 const props = defineProps({
   isOpen: {
     type: Boolean,
-    default: false,
+    default: false
   },
   isBuy: {
     type: Boolean,
-    default: true,
+    default: true
   },
   itemName: {
     type: String,
-    default: '',
+    default: ''
   },
   orderPrice: {
     type: Number,
-    default: 0,
+    default: 0
   },
   count: {
     type: Number,
-    default: 0,
+    default: 0
   },
   sum: {
     type: Number,
-    default: 0,
+    default: 0
   },
   description: {
     type: String,
-    default: '',
+    default: ''
   },
   type: {
     type: Number,
-    default: 1,
+    default: 1
   },
   sellerMsg: {
     type: String,
-    default: '',
+    default: ''
   },
   updatedAt: {
     type: String,
-    default: '',
+    default: ''
   },
   state: {
     type: Number,
-    default: 0,
-  },
-});
+    default: 0
+  }
+})
 
 const localVisible = computed({
   get: () => props.isOpen,
   set: (val) => {
-    emit('update:isOpen', val);
-  },
-});
+    emit('update:isOpen', val)
+  }
+})
 
 const repeat = () => {
-  emit('repeat');
-  localVisible.value = false;
-};
+  emit('repeat')
+  localVisible.value = false
+}
 </script>

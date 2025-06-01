@@ -436,23 +436,40 @@ const getPendingRequests = () => {
   })
 }
 
+const noAnswerData = ref(
+  {
+    userType: userStore.userType,
+    state: 0,
+    sellerMsg: '',
+    registrarId: user.value.id,
+    registrarType: user.value.type,
+    registrarName: user.value.name,
+    uName: user.value.userName
+  }
+)
+
 const checkExpiredRequests = () => {
   const now = Date.now()
   const expiredRequests = pendingRequests.value.filter(
-    (request) => now - request.timestamp > 60000
+    (request) => now - request.timestamp > 50000
   )
 
   if (expiredRequests.length > 0) {
     pendingRequests.value = pendingRequests.value.filter(
-      (request) => now - request.timestamp <= 60000
+      (request) => now - request.timestamp <= 50000
     )
 
     expiredRequests.forEach((request) => {
-      toast.add({
-        severity: 'info',
-        summary: 'درخواست بدون پاسخ',
-        life: 6000,
-        detail: `درخواست ${request.id} پس از 60 ثانیه حذف شد`
+      noAnswerData.value.id = request.id
+      repository.updateState(noAnswerData.value).then((response) => {
+        if (response.data.state) {
+          toast.add({
+            severity: 'info',
+            summary: 'درخواست بدون پاسخ',
+            life: 6000,
+            detail: `درخواست ${request.id} پس از 60 ثانیه حذف شد`
+          })
+        }
       })
     })
   }
