@@ -9,7 +9,7 @@
       <div class="mb-3 md:mb-4">
         <label class="block text-sm font-medium mb-1 text-right">شماره موبایل</label>
         <IconField>
-          <InputIcon class="pi pi-mobile"/>
+          <InputIcon class="pi pi-mobile" />
           <InputText
             v-model="mobile"
             placeholder="09121234567"
@@ -52,7 +52,7 @@
         <div class="mb-3 md:mb-4" v-if="userType === 1">
           <label class="block text-sm font-medium mb-1 text-right">رمز عبور</label>
           <IconField iconPosition="right">
-            <InputIcon class="pi pi-lock"/>
+            <InputIcon class="pi pi-lock" />
             <Password
               v-model="password"
               toggleMask
@@ -97,205 +97,209 @@
 </template>
 
 <script setup>
-import loginBg from '@/assets/images/login-bg.jpeg';
-import { computed, onUnmounted, ref, watch } from 'vue';
-import { useField, useForm } from 'vee-validate';
-import { toTypedSchema } from '@vee-validate/zod';
-import * as z from 'zod';
-import { useRouter } from 'vue-router';
-import { useUserStore } from '@/stores/userStore.js';
-import { useToast } from 'primevue/usetoast';
-import { useDeviceStore } from '@/stores/deviceStore.js';
-import moment from 'moment-jalaali';
+import loginBg from '@/assets/images/login-bg.jpeg'
+import { computed, onUnmounted, ref, watch } from 'vue'
+import { useField, useForm } from 'vee-validate'
+import { toTypedSchema } from '@vee-validate/zod'
+import * as z from 'zod'
+import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/userStore.js'
+import { useToast } from 'primevue/usetoast'
+import { useDeviceStore } from '@/stores/deviceStore.js'
+import moment from 'moment-jalaali'
 
-const version = import.meta.env.VITE_VERSION;
+const version = import.meta.env.VITE_VERSION
 
-const toast = useToast();
-const userStore = useUserStore();
-const router = useRouter();
-const isLoading = ref(false);
-const resendCodeLoading = ref(false);
-const step = ref(1);
-const countdown = ref(0);
-const userType = ref(1);
-let countdownInterval = null;
+const toast = useToast()
+const userStore = useUserStore()
+const router = useRouter()
+const isLoading = ref(false)
+const resendCodeLoading = ref(false)
+const step = ref(1)
+const countdown = ref(0)
+const userType = ref(1)
+let countdownInterval = null
 
-const deviceStore = useDeviceStore();
+const deviceStore = useDeviceStore()
 const formattedDeviceInfo = computed(() => {
-  if (!deviceStore.deviceInfo) return '';
+  if (!deviceStore.deviceInfo) return ''
 
-  const parts = deviceStore.deviceInfo.split('|');
-  if (parts.length < 6) return '';
+  const parts = deviceStore.deviceInfo.split('|')
+  if (parts.length < 6) return ''
 
-  const browser = parts[1];
-  const osName = parts[4];
-  const osVersion = parts[5];
+  const browser = parts[1]
+  const osName = parts[4]
+  const osVersion = parts[5]
 
-  return `${osName} ${osVersion} (${browser})`;
-});
+  return `${osName} ${osVersion} (${browser})`
+})
 
 const jalaliDate = computed(() => {
-  return moment().format('jD jMMMM jYYYY');
-});
+  return moment().format('jD jMMMM jYYYY')
+})
 
 const mobileSchema = z.object({
   mobile: z.string({
-    required_error: 'شماره موبایل الزامی است',
+    required_error: 'شماره موبایل الزامی است'
   }).
     min(1, { message: 'شماره موبایل الزامی است' }).
     min(11, { message: 'شماره موبایل باید ۱۱ رقمی باشد' }).
-    regex(/^09[0-9]{9}$/, { message: 'شماره موبایل معتبر نیست (فرمت صحیح: 09123456789)' }),
-});
+    regex(/^09[0-9]{9}$/, { message: 'شماره موبایل معتبر نیست (فرمت صحیح: 09123456789)' })
+})
 
 const adminOtpSchema = z.object({
   otp: z.string({
-    required_error: 'کد ورود الزامی است',
+    required_error: 'کد ورود الزامی است'
   }).
     min(4, 'کد ورود باید ۴ رقمی باشد').
     max(4, 'کد ورود باید ۴ رقمی باشد'),
-  password: z.string().nonempty('رمز عبور الزامی است').min(6, 'رمز عبور باید حداقل ۶ کاراکتر باشد'),
-});
+  password: z.string().nonempty('رمز عبور الزامی است').min(6, 'رمز عبور باید حداقل ۶ کاراکتر باشد')
+})
 
 const regularOtpSchema = z.object({
   otp: z.string({
-    required_error: 'کد ورود الزامی است',
+    required_error: 'کد ورود الزامی است'
   }).
     min(4, 'کد ورود باید ۴ رقمی باشد').
-    max(4, 'کد ورود باید ۴ رقمی باشد'),
-});
+    max(4, 'کد ورود باید ۴ رقمی باشد')
+})
 
 // تغییر اصلی اینجا است: استفاده از reactive schema
-const currentSchema = ref(toTypedSchema(mobileSchema));
+const currentSchema = ref(toTypedSchema(mobileSchema))
 
 const { handleSubmit, errors, resetForm } = useForm({
-  validationSchema: currentSchema,
-});
+  validationSchema: currentSchema
+})
 
-const { value: mobile } = useField('mobile');
-const { value: otp } = useField('otp');
-const { value: password } = useField('password');
+const { value: mobile } = useField('mobile')
+const { value: otp } = useField('otp')
+const { value: password } = useField('password')
 
 const startCountdown = () => {
-  countdown.value = 120;
+  countdown.value = 120
   countdownInterval = setInterval(() => {
     if (countdown.value > 0) {
-      countdown.value--;
+      countdown.value--
     } else {
-      clearInterval(countdownInterval);
+      clearInterval(countdownInterval)
     }
-  }, 1000);
-};
+  }, 1000)
+}
 
 watch(step, (newStep) => {
   currentSchema.value = toTypedSchema(
-    newStep === 1 ? mobileSchema : userType.value === 1 ? adminOtpSchema : regularOtpSchema);
+    newStep === 1 ? mobileSchema : userType.value === 1 ? adminOtpSchema : regularOtpSchema)
 
   resetForm({
     values: {
       mobile: mobile.value,
       otp: '',
-      password: '',
-    },
-  });
+      password: ''
+    }
+  })
 
   if (newStep === 2) {
-    startCountdown();
+    startCountdown()
   }
-});
+})
 
 onUnmounted(() => {
   if (countdownInterval) {
-    clearInterval(countdownInterval);
+    clearInterval(countdownInterval)
   }
-});
+})
 const handleLogin = async (values) => {
-  isLoading.value = true;
+  isLoading.value = true
   if (step.value === 1) {
-    requestLoginWithMobile(values);
+    requestLoginWithMobile(values)
   } else {
-    userStore.verifyLoginCode(values.otp, values.password).then(() => {
-      toast.add({
-        severity: 'success',
-        summary: 'موفق',
-        life: 3000,
-        detail: 'عملیات ورود با موفقیت انجام شد.',
-      });
-      if (userType.value === 1) {
-        router.push('/trade');
+    userStore.verifyLoginCode(values.otp, values.password).then((response) => {
+      console.log('response:', response)
+      if (response.data.state) {
+        toast.add({
+          severity: 'success',
+          summary: 'موفق',
+          life: 3000,
+          detail: 'عملیات ورود با موفقیت انجام شد.'
+        })
+        if (userType.value === 1) {
+          router.push('/trade')
+        } else {
+          router.push('/customer-trade')
+        }
       } else {
-        router.push('/customer-trade');
+        toast.add({
+          severity: 'warn',
+          summary: 'خطا',
+          life: 3000,
+          detail: response.data.msg
+        })
       }
-    }).catch((error) => {
-      toast.add({
-        severity: 'warn',
-        summary: 'خطا',
-        life: 3000,
-        detail: error.msg,
-      });
+
     }).finally(() => {
-      isLoading.value = false;
-    });
+      isLoading.value = false
+    })
   }
-};
+}
 
 const requestLoginWithMobile = (values) => {
   userStore.requestLoginCode(values.mobile).then((response) => {
     if (response.data.state) {
-      userType.value = response.data.type;
-      step.value = 2;
+      userType.value = response.data.type
+      step.value = 2
       toast.add({
         severity: 'success',
         summary: 'موفق',
         life: 3000,
-        detail: 'کد تایید برای شماره موبایل شما ارسال شد',
-      });
+        detail: 'کد تایید برای شماره موبایل شما ارسال شد'
+      })
     } else {
       toast.add({
         severity: 'error',
         summary: 'خطا',
         life: 3000,
-        detail: response.data.msg,
-      });
+        detail: response.data.msg
+      })
     }
   }).catch((error) => {
-    console.log('error', error.msg);
+    console.log('error', error.msg)
     toast.add({
       severity: 'warn',
       summary: 'خطا',
       life: 3000,
-      detail: error.msg,
-    });
+      detail: error.msg
+    })
   }).finally(() => {
-    isLoading.value = false;
-  });
-};
+    isLoading.value = false
+  })
+}
 
-const onSubmit = handleSubmit(handleLogin);
+const onSubmit = handleSubmit(handleLogin)
 
 const resendCode = () => {
-  isLoading.value = true;
+  isLoading.value = true
 
   userStore.requestLoginCode(mobile.value).then(() => {
-    startCountdown();
+    startCountdown()
     toast.add({
       severity: 'success',
       summary: 'موفق',
       life: 3000,
-      detail: 'کد تایید جدید برای شماره موبایل شماارسال شد',
-    });
+      detail: 'کد تایید جدید برای شماره موبایل شماارسال شد'
+    })
   }).catch((error) => {
-    console.log('error', error.msg);
+    console.log('error', error.msg)
     toast.add({
       severity: 'warn',
       summary: 'خطا',
       life: 3000,
-      detail: error.msg,
-    });
+      detail: error.msg
+    })
   }).finally(() => {
-    resendCodeLoading.value = false;
-    isLoading.value = false;
-  });
-};
+    resendCodeLoading.value = false
+    isLoading.value = false
+  })
+}
 </script>
 
 <style scoped>
