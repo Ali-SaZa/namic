@@ -384,7 +384,7 @@ const customerRoutes = [
   {
     path: '/requests/customer/list',
     name: 'requests-customer-list',
-    faName: 'درخواست‌های من',
+    faName: 'حسابداری',
     icon: 'fa-solid fa-file-invoice-dollar',
     component: MyRequestsView,
     bottomNavigationPosition: 2,
