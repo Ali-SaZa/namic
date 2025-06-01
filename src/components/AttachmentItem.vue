@@ -50,10 +50,10 @@
 </template>
 
 <script setup>
-import { inject } from 'vue';
+import { inject } from 'vue'
 
-const apiUrl = import.meta.env.VITE_BASE_URL;
-const emit = defineEmits(['check']);
+const apiUrl = import.meta.env.VITE_SERVER_ATTACHMENTS_URL
+const emit = defineEmits(['check'])
 
 const props = defineProps({
   userName: {
@@ -84,16 +84,16 @@ const props = defineProps({
     type: Number,
     default: 0
   }
-});
+})
 
-const dateTime = inject('dateTime');
+const dateTime = inject('dateTime')
 
 const download = () => {
-  window.open(`${apiUrl}/attachments/${props.fileName}`, '_blank');
-};
+  window.open(`${apiUrl}attachments/${props.fileName}`, '_blank')
+}
 
 const check = () => {
-  console.log('props.id:',props.id)
-  emit('check', props.id);
-};
+  console.log('props.id:', props.id)
+  emit('check', props.id)
+}
 </script>
