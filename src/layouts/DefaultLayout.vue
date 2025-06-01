@@ -49,8 +49,7 @@
     <Drawer v-model:visible="visible" position="right">
       <template #container="{ closeCallback }">
         <div class="flex flex-col h-full">
-          <div class="flex items-center justify-between px-6 pt-4 shrink-0">
-            <span class="font-semibold text-2xl text-primary">Your Logo</span>
+          <div class="flex items-center justify-end px-6 pt-4 shrink-0">
             <Button type="button" @click="closeCallback" icon="pi pi-times" rounded outlined/>
           </div>
           <div class="overflow-y-auto p-4 panelmenu-wrapper min-h-[93dvh] flex flex-col justify-between gap-2">
