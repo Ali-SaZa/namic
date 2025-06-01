@@ -47,7 +47,8 @@
             @click="updateValue(true, false, price)"
             :disabled="isLoading"
           />
-          <div v-format-number="price.price" class="font-bold"/>
+          <div v-format-number="price.price" @dblclick="editPrice(price)"
+               class="cursor-pointer text-center w-full font-bold" />
           <Button
             size="small"
             icon="fa-solid fa-minus"
@@ -64,10 +65,10 @@
     <template v-if="loading">
       <div class="flex gap-4 space-y-2 mb-4" v-for="item in Array(4)" :key="item">
         <div class="flex-1">
-          <Skeleton class="w-full rounded-lg h-20" height="4rem"/>
+          <Skeleton class="w-full rounded-lg h-20" height="4rem" />
         </div>
         <div class="flex-1">
-          <Skeleton class="w-full rounded-lg h-20" height="4rem"/>
+          <Skeleton class="w-full rounded-lg h-20" height="4rem" />
         </div>
       </div>
     </template>
@@ -84,92 +85,92 @@
     :breakpoints="{ '1199px': '45vw', '575px': '80vw' }"
   >
     <EditItemQuick :data="priceItem" @cancel="editPriceModalIsOpen = false"
-                   @updated="updatedItem"/>
+                   @updated="updatedItem" />
   </Dialog>
 </template>
 
 <script setup>
-import { inject, ref } from 'vue';
-import { useToast } from 'primevue/usetoast';
-import EditItemQuick from '@/components/EditItemQuick.vue';
+import { inject, ref } from 'vue'
+import { useToast } from 'primevue/usetoast'
+import EditItemQuick from '@/components/EditItemQuick.vue'
 
-const repository = inject('repository');
-const toast = useToast();
-const isLoading = ref(false);
+const repository = inject('repository')
+const toast = useToast()
+const isLoading = ref(false)
 
 const props = defineProps({
   visiblePrices: {
     type: Array,
-    default: [],
+    default: []
   },
   loading: {
     type: Boolean,
-    default: false,
+    default: false
   },
   editable: {
     type: Boolean,
-    default: false,
-  },
-});
+    default: false
+  }
+})
 
-const emit = defineEmits(['getPrices']);
+const emit = defineEmits(['getPrices'])
 
-const editPriceModalIsOpen = ref(false);
-const editPriceHeader = ref('');
-const priceItem = ref({});
+const editPriceModalIsOpen = ref(false)
+const editPriceHeader = ref('')
+const priceItem = ref({})
 
 const updateValue = (increase, profit, price) => {
   let data = {
-    id: price.id,
-  };
-  let message = '';
+    id: price.id
+  }
+  let message = ''
   if (increase) {
     if (profit) {
-      data.profit = price.profit + price.profitDiff;
-      message = 'افزایش سود ' + price.name + ' با موفقیت انجام شد.';
+      data.profit = price.profit + price.profitDiff
+      message = 'افزایش سود ' + price.name + ' با موفقیت انجام شد.'
     } else {
-      data.price = +price.price + price.priceDiff;
-      message = 'افزایش قیمت ' + price.name + ' با موفقیت انجام شد.';
+      data.price = +price.price + price.priceDiff
+      message = 'افزایش قیمت ' + price.name + ' با موفقیت انجام شد.'
     }
   } else {
     if (profit) {
-      data.profit = price.profit - price.profitDiff;
-      message = 'کاهش سود ' + price.name + ' با موفقیت انجام شد.';
+      data.profit = price.profit - price.profitDiff
+      message = 'کاهش سود ' + price.name + ' با موفقیت انجام شد.'
     } else {
-      data.price = +price.price - price.priceDiff;
-      message = 'کاهش قیمت ' + price.name + ' با موفقیت انجام شد.';
+      data.price = +price.price - price.priceDiff
+      message = 'کاهش قیمت ' + price.name + ' با موفقیت انجام شد.'
     }
   }
 
-  isLoading.value = true;
+  isLoading.value = true
   repository.updatePrice(data).then(() => {
     toast.add({
       severity: 'success',
       summary: 'موفقیت',
       life: 3000,
-      detail: message,
-    });
-    emit('getPrices');
+      detail: message
+    })
+    emit('getPrices')
   }).catch((error) => {
     toast.add({
       severity: 'warn',
       summary: 'خطا',
       life: 3000,
-      detail: error.msg,
-    });
+      detail: error.msg
+    })
   }).finally(() => {
-    isLoading.value = false;
-  });
-};
+    isLoading.value = false
+  })
+}
 
 const editPrice = (price) => {
-  editPriceModalIsOpen.value = true;
-  editPriceHeader.value = 'ویرایش ' + price.name;
-  priceItem.value = price;
-};
+  editPriceModalIsOpen.value = true
+  editPriceHeader.value = 'ویرایش ' + price.name
+  priceItem.value = price
+}
 
 const updatedItem = () => {
-  editPriceModalIsOpen.value = false;
-  emit('getPrices');
-};
+  editPriceModalIsOpen.value = false
+  emit('getPrices')
+}
 </script>
