@@ -2,13 +2,7 @@
   <div>
     <div class="px-4 md:px-8 w-full h-18 flex items-center justify-between bg-gray-50">
       <div class="flex items-center justify-between w-full md:w-60">
-        <OverlayBadge :severity="userIsOnline?'success':'danger'" class="inline-flex" v-if="userStore.userType===1">
-          <Avatar class="p-overlay-badge"
-                  shape="circle"
-                  image="https://primefaces.org/cdn/primevue/images/organization/walter.jpg"
-                  size="large"/>
-        </OverlayBadge>
-        <div class="mr-2">
+        <div>
           <div class="flex" v-if="userStore.userType===1">
             <div class="text-sm font-bold text-right text-green-500 mr-1">(مدیر)</div>
             <div class="text-sm text-right">
@@ -31,6 +25,13 @@
                     @click="logOutModalIsOpen = true"
                     severity="danger" class="h-7 !w-7 ml-2"/>
           </div>
+        </div>
+        <div
+          class="bg-gray-200 border-r-2 text-gray-700 border-gray-900 p-2 rounded flex lg:hidden items-center gap-2 mr-4">
+          <span>
+            {{ currentRoute.faName }}
+          </span>
+          <i :class="currentRoute.icon"/>
         </div>
       </div>
       <div class="hidden lg:flex items-center">
