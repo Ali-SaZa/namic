@@ -394,6 +394,10 @@ class ApiRepository {
   updateUserPassword(data={}){
     return this.http.post('users/changeUserPass.php', data)
   }
+
+  dataBackup(data={}){
+    return this.http.post('database/backup.php', data)
+  }
 }
 
 const repository = new ApiRepository();

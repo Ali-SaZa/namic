@@ -19,6 +19,8 @@
         label="شروع پشتیبان گیری از اطلاعات"
         icon-pos="right"
         icon="fa-solid fa-floppy-disk"
+        @click="startBackup"
+        :loading="backupLoading"
       />
     </div>
 
@@ -70,14 +72,16 @@
 </template>
 
 <script setup>
-import { ref, inject } from 'vue'
+import { inject, ref } from 'vue'
 import PasswordBox from '@/components/PasswordBox.vue'
 
 import { useUserStore } from '@/stores/userStore.js'
+import { useToast } from 'primevue/usetoast'
 
 const userStore = useUserStore()
 const isCorrectPassword = ref(false)
 const repository = inject('repository')
+const toast = useToast()
 
 const dateTime = inject('dateTime')
 const now = dateTime.now()
@@ -98,5 +102,22 @@ const submitAdminPassword = async (password) => {
   // } catch (error) {
   //   console.log(error, 'Error on submitAdminPassword')
   // }
+}
+
+const backupLoading = ref(false)
+const startBackup = () => {
+  backupLoading.value = true
+  repository.dataBackup().then((response) => {
+    if (response.data.state) {
+      toast.add({
+        severity: 'success',
+        summary: response.data.msg,
+        life: 8000,
+        detail: 'نام فایل: ' + response.data.fileName
+      })
+    }
+  }).finally(() => {
+    backupLoading.value = false
+  })
 }
 </script>
