@@ -6,7 +6,8 @@ export const useThemeStore = defineStore('theme', () => {
   const systemPrefersDark = ref(false)
 
   function initializeTheme() {
-    // بررسی preference سیستم
+    console.log('initializeTheme:')
+
     systemPrefersDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches
 
     // اولویت با localStorage است، اگر وجود نداشت از سیستم استفاده می‌کند

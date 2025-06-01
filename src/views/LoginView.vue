@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen flex items-center flex-col justify-center md:bg-cover md:bg-center p-4"
-       :style="{ backgroundImage: `url(${loginBg})` }">
+       :style="{ backgroundImage: `url(${bgImage})` }">
     <form @submit.prevent="onSubmit"
           class="p-2 md:p-4 md:min-h-[260px] w-full md:w-[380px] shadow-xl bg-gray-50/70 rounded-lg"
           dir="ltr">
@@ -87,10 +87,10 @@
         این برنامه را می‌پذیرم
       </div>
     </form>
-    <div class="text-center mt-2 text-black">
+    <div class="text-center text-gray-900 mt-2 text-black">
       {{ formattedDeviceInfo }}
     </div>
-    <div class="text-center mt-4 text-black">
+    <div class="text-center text-gray-900 mt-4 text-black">
       {{ version }}
     </div>
   </div>
@@ -98,6 +98,7 @@
 
 <script setup>
 import loginBg from '@/assets/images/login-bg.jpeg'
+import loginBgDark from '@/assets/images/login-bg-dark.png'
 import { computed, onUnmounted, ref, watch } from 'vue'
 import { useField, useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
@@ -107,11 +108,14 @@ import { useUserStore } from '@/stores/userStore.js'
 import { useToast } from 'primevue/usetoast'
 import { useDeviceStore } from '@/stores/deviceStore.js'
 import moment from 'moment-jalaali'
+import { useThemeStore } from '@/stores/theme.js'
+import { storeToRefs } from 'pinia'
 
 const version = import.meta.env.VITE_VERSION
 
 const toast = useToast()
 const userStore = useUserStore()
+const themeStore = useThemeStore()
 const router = useRouter()
 const isLoading = ref(false)
 const resendCodeLoading = ref(false)
@@ -119,6 +123,7 @@ const step = ref(1)
 const countdown = ref(0)
 const userType = ref(1)
 let countdownInterval = null
+const { isDark } = storeToRefs(themeStore)
 
 const deviceStore = useDeviceStore()
 const formattedDeviceInfo = computed(() => {
@@ -132,6 +137,10 @@ const formattedDeviceInfo = computed(() => {
   const osVersion = parts[5]
 
   return `${osName} ${osVersion} (${browser})`
+})
+
+const bgImage = computed(() => {
+  return isDark.value ? loginBgDark : loginBg
 })
 
 const jalaliDate = computed(() => {
