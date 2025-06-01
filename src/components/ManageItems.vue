@@ -361,7 +361,6 @@ const validateForm = async () => {
 
     if (relatedChecked.value) {
       if (relatedItems.value.length) {
-        console.log('disagreementRelatedItems', disagreementRelatedItems.value)
         if (!selectedRelatedItems.value) {
           selectedRelatedItemError.value = 'انتخاب آیتم مرتبط الزامی است'
         }

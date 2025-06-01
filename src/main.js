@@ -96,7 +96,6 @@ app.directive('number-to-persian', {
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js').then(registration => {
-      console.log('SW registered:', registration.scope)
 
       registration.onupdatefound = () => {
         const installingWorker = registration.installing

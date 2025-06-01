@@ -133,7 +133,6 @@ const props = defineProps({
 const displayRejectReasons = ref(false);
 
 const cancel = () => {
-  console.log('cancel:');
   displayRejectReasons.value = true;
 };
 

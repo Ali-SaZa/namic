@@ -142,7 +142,6 @@ function onFileSelect(event) {
 const submitAttachment = async () => {
   try {
     loading.value = true;
-    console.log('submitFiles');
     // اعتبارسنجی که همه فایل‌ها آپلود شده باشند
     if (!src1File.value) {
       toast.add({
@@ -163,7 +162,6 @@ const submitAttachment = async () => {
     formData.append('detail', description.value);
 
     const response = await repository.addAttachments(formData);
-    console.log(response);
 
     if (response.data.state) {
       toast.add({
@@ -191,7 +189,6 @@ const submitAttachment = async () => {
 const getAttachments = (filters) => {
   getAttachmentsLoading.value = true;
   repository.getAttachmentsList({ ...filters, userId: userStore.id }).then((response) => {
-    console.log('response', response);
     userAttachments.value = response.data.attachments;
   }).catch((error) => {
     toast.add({

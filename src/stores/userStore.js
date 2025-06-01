@@ -87,7 +87,6 @@ export const useUserStore = defineStore('user', () => {
 
   const fetchUserInfo = async () => {
     try {
-      console.log('fetchUserInfo:');
       if (!token.value || !id.value || !type.value) return;
 
       loading.value = true;
@@ -137,7 +136,6 @@ export const useUserStore = defineStore('user', () => {
   };
 
   const initialize = async () => {
-    console.log('initialize');
     if (isInitialized.value || !token.value || !id.value) return;
 
     try {

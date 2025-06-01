@@ -19,7 +19,6 @@ export const useDeviceStore = defineStore('device', () => {
 
   // تشخیص اطلاعات دستگاه و ذخیره در LocalStorage
   const detectDevice = () => {
-    console.log('detectDevice:');
     const parser = new UAParser();
     const result = parser.getResult();
     deviceData.value = {

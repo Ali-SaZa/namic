@@ -227,7 +227,6 @@ const getRemainedConfirmation = () => {
       remainedConfirmationData.value.modalIsOpen = true
     }
   }).catch((error) => {
-    console.log('error', error.msg)
     toast.add({
       severity: 'warn',
       summary: 'خطا',

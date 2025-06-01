@@ -26,7 +26,6 @@ const user = computed(() => userStore.user);
 const audio = new Audio('/sound/notif.mp3');
 
 const toggleStatus = (event) => {
-  console.log('event:', event);
   repository.setOnlineState({ userId: user.value.id, isAdmin: 1, onlineValue: event ? 1 : 0 }).then((response) => {
     if (response.data.state) {
       onlineStatusStore.toggleManualStatus();

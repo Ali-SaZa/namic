@@ -93,7 +93,6 @@ const download = () => {
 }
 
 const check = () => {
-  console.log('props.id:', props.id)
   emit('check', props.id)
 }
 </script>

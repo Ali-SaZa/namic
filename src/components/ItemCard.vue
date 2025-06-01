@@ -454,8 +454,6 @@ const handleAmountInput = (value) => {
     })
   }
 }
-
-console.log(props.item, 'item data')
 </script>
 
 <style scoped></style>

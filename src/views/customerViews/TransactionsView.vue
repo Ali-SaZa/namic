@@ -221,7 +221,6 @@ const getHavaleList = async () => {
     })
     if (response) {
       havaleList.value = response.data.havale
-      console.log(havaleList.value)
     }
   } catch (error) {
     console.log(error, 'Error on getHavaleList ')

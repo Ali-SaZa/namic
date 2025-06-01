@@ -259,7 +259,6 @@ const validateForm = async () => {
 const handleAddUser = async (values) => {
   isLoading.value = true
   try {
-    console.log(values)
     const response = await repository.addUser(values)
     if (response.data.state) {
       toast.add({

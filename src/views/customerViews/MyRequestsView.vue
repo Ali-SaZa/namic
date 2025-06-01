@@ -110,7 +110,6 @@ onMounted(() => {
 const getRequestList = (filters) => {
   loading.value = true;
   repository.getCustomerRequestList(filters).then((response) => {
-    console.log('response:', response);
     reportList.value = response.data.requests;
   }).catch((error) => {
     console.log('error:', error);

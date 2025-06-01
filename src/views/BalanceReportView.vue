@@ -141,8 +141,7 @@ const setBalanceDateSitting = () => {
   console.log('setBalanceDateSitting')
   const value = filteredType.value + '@' + dailyFilterDate.value
   repository.setSetting({ value: value, userType: user.value.type, key: 'BIV' }).
-    then((response) => {
-      console.log('re', response)
+    then(() => {
       toast.add({
         severity: 'success',
         summary: 'موفقیت',

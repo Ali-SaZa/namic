@@ -160,7 +160,6 @@ const user = computed(() => userStore.user);
 onMounted(() => {
   getUsers();
   getItemsList();
-  console.log('route:', route.query.userId);
   if (route.query.userId) {
     handleUserIdFromQuery();
   }

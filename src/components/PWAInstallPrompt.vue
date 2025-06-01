@@ -63,7 +63,6 @@ onMounted(() => {
 });
 
 const installApp = async () => {
-  console.log('deferredPrompt:', deferredPrompt);
   if (!deferredPrompt) return;
 
   showInstallPrompt.value = false;
