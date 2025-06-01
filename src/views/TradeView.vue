@@ -23,7 +23,7 @@
                <span class="mr-1 font-bold">
                 {{ onlineUsers.length }}
               </span>
-            <i class="fa-solid fa-user-group !text-[12px]"/>
+            <i class="fa-solid fa-user-group !text-[12px]" />
           </div>
           <Button
             icon="fa-solid fa-comments"
@@ -35,28 +35,28 @@
         <div class="flex gap-1">
           <Button asChild v-slot="slotProps" severity="secondary" rounded>
             <RouterLink to="/settings" :class="slotProps.class">
-              <i class="fa-solid fa-gear"/>
+              <i class="fa-solid fa-gear" />
             </RouterLink>
           </Button>
           <Button asChild v-slot="slotProps" severity="secondary" rounded>
             <RouterLink to="/docs/list/1" :class="slotProps.class">
-              <i class="fa-solid fa-file-invoice-dollar"/>
+              <i class="fa-solid fa-file-invoice-dollar" />
             </RouterLink>
           </Button>
           <Button asChild v-slot="slotProps" severity="secondary" rounded>
             <RouterLink to="/balance-report" :class="slotProps.class">
-              <i class="fa-solid fa-scale-balanced"/>
+              <i class="fa-solid fa-scale-balanced" />
             </RouterLink>
           </Button>
           <Button asChild v-slot="slotProps" severity="secondary" rounded>
             <RouterLink to="/manual-document" :class="slotProps.class">
-              <i class="fa-solid fa-file-invoice-dollar"/>
+              <i class="fa-solid fa-file-invoice-dollar" />
             </RouterLink>
           </Button>
         </div>
       </div>
-      <Divider/>
-      <SummaryBalance :balance="balance"/>
+      <Divider />
+      <SummaryBalance :balance="balance" />
     </div>
     <div class="col-span-1 lg:col-span-3" v-if="selectedPage === 1">
       <div class="grid grid-cols-2 justify-between items-center">
@@ -67,8 +67,7 @@
         </div>
         <div
           v-if="adminSettingsStore.settings.orderItemViewId === 1"
-          class="col-span-2 md:col-span-1 text-left"
-        >
+          class="col-span-2 md:col-span-1 text-left">
           <MultiSelect
             filter
             ref="multiRef"
@@ -91,7 +90,7 @@
             v-for="itemType in itemTypes"
             :key="itemType.id"
             :severity="filteredItemTypeCode === itemType.code ? 'info' : 'secondary'"
-            class="min-w-1/3 flex flex-col"
+            class="min-w-1/4 md:min-w-1/8 flex flex-col"
             size="small"
             @click="filteredItemTypeCode = itemType.code"
           >
@@ -104,7 +103,7 @@
       <div class="shadow w-full min-h-20 flex flex-col rounded-lg bg-gray-50 mt-2">
         <div class="p-4 h-full relative flex-1">
           <TradeItemList :visible-prices="visiblePrices" :loading="loading" @get-prices="getPrices(false)"
-                         :editable="adminSettingsStore.settings.orderViewId === 2"/>
+                         :editable="adminSettingsStore.settings.orderViewId === 2" />
         </div>
       </div>
     </div>
@@ -125,7 +124,7 @@
               :type="request.priceType"
               :orderId="request.id"
               :customerMsg="request.customerMsg"
-              @confirm="confirmOrder"/>
+              @confirm="confirmOrder" />
           </div>
         </template>
         <div class="p-4 h-full relative flex-1" v-else>
@@ -134,7 +133,7 @@
       </div>
     </div>
     <div class="col-span-1 lg:col-span-3" v-if="selectedPage === 3">
-      <ManualDoc/>
+      <ManualDoc />
     </div>
     <template v-if="pendingRequests.length && selectedPage === 1 && adminSettingsStore.settings.orderViewId !== 2">
       <div class="col-span-1 lg:col-span-3 lg:col-start-2 mt-2"
@@ -151,7 +150,7 @@
           :type="request.priceType"
           :orderId="request.id"
           :customerMsg="request.customerMsg"
-          @confirm="confirmOrder"/>
+          @confirm="confirmOrder" />
       </div>
     </template>
 
@@ -192,269 +191,272 @@
 </template>
 
 <script setup>
-import { computed, inject, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import MultiSelect from 'primevue/multiselect';
-import { useUserStore } from '@/stores/userStore.js';
-import { useToast } from 'primevue/usetoast';
-import moment from 'moment-jalaali';
-import { useAdminSettingsStore } from '@/stores/adminSettings';
-import ManualDoc from '@/components/ManualDoc.vue';
-import AdminOrderConfirmation from '@/components/AdminOrderConfirmation.vue';
-import TradeItemList from '@/components/TradeItemList.vue';
-import SummaryBalance from '@/components/SummaryBalance.vue';
+import { computed, inject, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import MultiSelect from 'primevue/multiselect'
+import { useUserStore } from '@/stores/userStore.js'
+import { useToast } from 'primevue/usetoast'
+import moment from 'moment-jalaali'
+import { useAdminSettingsStore } from '@/stores/adminSettings'
+import ManualDoc from '@/components/ManualDoc.vue'
+import AdminOrderConfirmation from '@/components/AdminOrderConfirmation.vue'
+import TradeItemList from '@/components/TradeItemList.vue'
+import SummaryBalance from '@/components/SummaryBalance.vue'
+import { useSelectedItemsStore } from '@/stores/selectedItemsStore'
 
-const repository = inject('repository');
-const dateTime = inject('dateTime');
-const userStore = useUserStore();
-const adminSettingsStore = useAdminSettingsStore();
+const repository = inject('repository')
+const dateTime = inject('dateTime')
+const userStore = useUserStore()
+const adminSettingsStore = useAdminSettingsStore()
+const selectedItemsStore = useSelectedItemsStore()
 
-const toast = useToast();
-const lastUpdateTime = ref('');
-const lastUpdateDay = ref('');
-const multiRef = ref(null);
-const user = computed(() => userStore.user);
-const adminMessage = ref('');
-const messageModalIsOpen = ref(false);
+const toast = useToast()
+const lastUpdateTime = ref('')
+const lastUpdateDay = ref('')
+const multiRef = ref(null)
+const user = computed(() => userStore.user)
+const adminMessage = ref('')
+const messageModalIsOpen = ref(false)
 
-const prices = ref([]);
-const loading = ref(true);
-const selectedItems = ref([]);
+const prices = ref([])
+const loading = ref(true)
+const selectedItems = computed({
+  get: () => selectedItemsStore.selectedItems,
+  set: (value) => { selectedItemsStore.selectedItems = value }
+})
 const balance = ref({
   count: [],
-  weight: 0,
-});
+  weight: 0
+})
 
-const priceInterval = ref(null);
-const priceIntervalTime = ref(6000);
-const summaryInterval = ref(null);
-const summaryIntervalTime = ref(10000);
-const onlineUsersInterval = ref(null);
-const onlineUsersIntervalTime = ref(8000);
-const onlineUsers = ref([]);
-const pendingRequestInterval = ref(null);
-const pendingRequestIntervalTime = ref(2000);
-const pendingRequests = ref([]);
+const priceInterval = ref(null)
+const priceIntervalTime = ref(6000)
+const summaryInterval = ref(null)
+const summaryIntervalTime = ref(10000)
+const onlineUsersInterval = ref(null)
+const onlineUsersIntervalTime = ref(8000)
+const onlineUsers = ref([])
+const pendingRequestInterval = ref(null)
+const pendingRequestIntervalTime = ref(2000)
+const pendingRequests = ref([])
 
-const filteredItemTypeCode = ref(1);
+const filteredItemTypeCode = ref(1)
 const itemTypes = [
   {
     name: 'گرمی',
-    code: 1,
+    code: 1
   },
   {
     name: 'سکه',
-    code: 2,
-  },
-  {
-    name: 'ارز',
-    code: 3,
-  },
-];
+    code: 2
+  }
+]
 
-const selectedPage = ref(1);
+const selectedPage = ref(1)
 const pages = [
   {
     name: 'برد قیمت',
-    id: 1,
+    id: 1
   },
   {
     name: 'درخواست ها',
-    id: 2,
+    id: 2
   },
   {
     name: 'سند دستی',
-    id: 3,
-  },
-];
+    id: 3
+  }
+]
 
-const audio = new Audio('/sound/sound1.mp3');
+const audio = new Audio('/sound/sound1.mp3')
 
 const visiblePrices = computed(() =>
   adminSettingsStore.settings.orderItemViewId === 1
     ? prices.value.filter((price) => selectedItems.value.includes(price.id)).filter(price => price.isActive === 1)
-    : prices.value.filter((price) => price.type === filteredItemTypeCode.value).filter(price => price.isActive === 1),
-);
+    : prices.value.filter((price) => price.type === filteredItemTypeCode.value).filter(price => price.isActive === 1)
+)
 
 onMounted(() => {
-  getPrices();
-  getAdminMessage();
+  getPrices()
+  getAdminMessage()
 
   priceInterval.value = setInterval(() => {
-    getPrices(false);
-  }, priceIntervalTime.value);
+    getPrices(false)
+  }, priceIntervalTime.value)
 
   watch(
     user,
     (newValue) => {
       if (newValue) {
-        getSummary();
-        getOnlineUsers();
-        getPendingRequests();
+        getSummary()
+        getOnlineUsers()
+        getPendingRequests()
 
         summaryInterval.value = setInterval(() => {
-          getSummary();
-        }, summaryIntervalTime.value);
+          getSummary()
+        }, summaryIntervalTime.value)
 
         onlineUsersInterval.value = setInterval(() => {
-          getOnlineUsers();
-        }, onlineUsersIntervalTime.value);
+          getOnlineUsers()
+        }, onlineUsersIntervalTime.value)
 
         pendingRequestInterval.value = setInterval(() => {
-          getPendingRequests();
-          checkExpiredRequests();
-        }, pendingRequestIntervalTime.value);
+          getPendingRequests()
+          checkExpiredRequests()
+        }, pendingRequestIntervalTime.value)
       }
     },
-    { immediate: true },
-  );
-});
+    { immediate: true }
+  )
+})
 
 onBeforeUnmount(() => {
-  if (priceInterval.value) clearInterval(priceInterval.value);
-  if (summaryInterval.value) clearInterval(summaryInterval.value);
-  if (onlineUsersInterval.value) clearInterval(onlineUsersInterval.value);
-  if (pendingRequestInterval.value) clearInterval(pendingRequestInterval.value);
-});
+  if (priceInterval.value) clearInterval(priceInterval.value)
+  if (summaryInterval.value) clearInterval(summaryInterval.value)
+  if (onlineUsersInterval.value) clearInterval(onlineUsersInterval.value)
+  if (pendingRequestInterval.value) clearInterval(pendingRequestInterval.value)
+})
 
 const getPrices = (firstTime = true) => {
   repository.getPriceList({ all: true }).then((response) => {
-    prices.value = response.data.prices;
-    lastUpdateTime.value = dateTime.getDate(response.data.lastUpdateTime, 'jMM/jDD', null, true);
-    lastUpdateDay.value = dateTime.getJalaliDay(moment(response.data.lastUpdateTime));
+    prices.value = response.data.prices
+    lastUpdateTime.value = dateTime.getDate(response.data.lastUpdateTime, 'jMM/jDD', null, true)
+    lastUpdateDay.value = dateTime.getJalaliDay(moment(response.data.lastUpdateTime))
     if (firstTime) {
-      loading.value = false;
-      selectedItems.value = prices.value.slice(0, 4).map((r) => r.id);
+      loading.value = false
+      if (selectedItems.value.length === 0) {
+        selectedItems.value = prices.value.slice(0, 4).map((r) => r.id)
+      }
     }
   }).catch((error) => {
-    console.log('error', error.msg);
+    console.log('error', error.msg)
     toast.add({
       severity: 'warn',
       summary: 'خطا',
       life: 3000,
-      detail: error.msg,
-    });
-  });
-};
+      detail: error.msg
+    })
+  })
+}
 
 const getSummary = () => {
-  if (!user.value) return;
+  if (!user.value) return
 
   repository.getTotalSummary({ BIV: 'all', userType: user.value.type }).then((response) => {
-    balance.value = response.data.balance;
+    balance.value = response.data.balance
   }).catch((error) => {
     toast.add({
       severity: 'warn',
       summary: 'خطا',
       life: 3000,
-      detail: error.msg,
-    });
-  });
-};
+      detail: error.msg
+    })
+  })
+}
 
 const getAdminMessage = () => {
   repository.getAdminMessage().then((response) => {
-    adminMessage.value = response.data.message;
+    adminMessage.value = response.data.message
   }).catch((error) => {
     toast.add({
       severity: 'warn',
       summary: 'خطا',
       life: 3000,
-      detail: error.msg,
-    });
-  });
-};
+      detail: error.msg
+    })
+  })
+}
 
 const saveAdminMessage = () => {
-  messageModalIsOpen.value = false;
+  messageModalIsOpen.value = false
   repository.setAdminMessage({ message: adminMessage.value }).then(() => {
     toast.add({
       severity: 'success',
       summary: 'موفقیت',
       life: 3000,
-      detail: 'پیام ادمین با موفقیت ویرایش شد',
-    });
+      detail: 'پیام ادمین با موفقیت ویرایش شد'
+    })
   }).catch((error) => {
-    console.log('error', error.msg);
+    console.log('error', error.msg)
     toast.add({
       severity: 'warn',
       summary: 'خطا',
       life: 3000,
-      detail: error.msg,
-    });
-  });
-};
+      detail: error.msg
+    })
+  })
+}
 
 const getOnlineUsers = () => {
   repository.getOnlineState().then((response) => {
-    onlineUsers.value = response.data.list;
+    onlineUsers.value = response.data.list
   }).catch((error) => {
-    console.log('error', error.msg);
+    console.log('error', error.msg)
     toast.add({
       severity: 'warn',
       summary: 'خطا',
       life: 3000,
-      detail: error.msg,
-    });
-  });
-};
+      detail: error.msg
+    })
+  })
+}
 
 const getPendingRequests = () => {
   const data = {
     userId: user.value.id,
     seen: localStorage.getItem('seen') || '',
     dismiss: 1,
-    maxId: localStorage.getItem('maxId') || 0,
-  };
+    maxId: localStorage.getItem('maxId') || 0
+  }
   repository.getPendingRequests(data).then((response) => {
-    localStorage.setItem('maxId', response.data.maxId);
+    localStorage.setItem('maxId', response.data.maxId)
     if (response.data.requests.length > 0) {
-      audio.currentTime = 0;
-      audio.play();
+      audio.currentTime = 0
+      audio.play()
       const newRequests = response.data.requests.map(request => ({
         ...request,
-        timestamp: Date.now(),
-      }));
-      pendingRequests.value = [...pendingRequests.value, ...newRequests];
+        timestamp: Date.now()
+      }))
+      pendingRequests.value = [...pendingRequests.value, ...newRequests]
     }
 
-    const seen = JSON.parse(localStorage.getItem('seen')) || [];
+    const seen = JSON.parse(localStorage.getItem('seen')) || []
     pendingRequests.value.forEach((request) => {
-      seen.push(request.id);
-    });
-    localStorage.setItem('seen', JSON.stringify(seen));
+      seen.push(request.id)
+    })
+    localStorage.setItem('seen', JSON.stringify(seen))
 
   }).catch((error) => {
-    console.log('error', error.msg);
+    console.log('error', error.msg)
     toast.add({
       severity: 'warn',
       summary: 'خطا',
       life: 3000,
-      detail: error.msg,
-    });
-  });
-};
+      detail: error.msg
+    })
+  })
+}
 
 const checkExpiredRequests = () => {
-  const now = Date.now();
+  const now = Date.now()
   const expiredRequests = pendingRequests.value.filter(
-    (request) => now - request.timestamp > 60000,
-  );
+    (request) => now - request.timestamp > 60000
+  )
 
   if (expiredRequests.length > 0) {
     pendingRequests.value = pendingRequests.value.filter(
-      (request) => now - request.timestamp <= 60000,
-    );
+      (request) => now - request.timestamp <= 60000
+    )
 
     expiredRequests.forEach((request) => {
       toast.add({
         severity: 'info',
         summary: 'درخواست بدون پاسخ',
         life: 6000,
-        detail: `درخواست ${request.id} پس از 60 ثانیه حذف شد`,
-      });
-    });
+        detail: `درخواست ${request.id} پس از 60 ثانیه حذف شد`
+      })
+    })
   }
-};
+}
 
 const confirmOrder = (event) => {
   const data = {
@@ -465,41 +467,41 @@ const confirmOrder = (event) => {
     registrarId: user.value.id,
     registrarType: user.value.type,
     registrarName: user.value.name,
-    uName: user.value.userName,
-  };
+    uName: user.value.userName
+  }
   repository.updateState(data).then((response) => {
     if (response.data.state) {
       pendingRequests.value = pendingRequests.value.filter(
-        (request) => request.id !== event.id,
-      );
-      let text = 'درخواست ' + event.id;
+        (request) => request.id !== event.id
+      )
+      let text = 'درخواست ' + event.id
       if (event.state === 3) {
-        text += ' تایید شد';
+        text += ' تایید شد'
       } else {
         if (event.sellerMsg.length) {
-          text += ' به دلیل : ' + event.sellerMsg + ' رد شد';
+          text += ' به دلیل : ' + event.sellerMsg + ' رد شد'
         } else {
-          text += ' رد شد';
+          text += ' رد شد'
         }
       }
       toast.add({
         severity: 'success',
         summary: 'موفقیت',
         life: 3000,
-        detail: text,
-      });
+        detail: text
+      })
     }
 
   }).catch((error) => {
-    console.log('error', error.msg);
+    console.log('error', error.msg)
     toast.add({
       severity: 'warn',
       summary: 'خطا',
       life: 3000,
-      detail: error.msg,
-    });
-  });
-};
+      detail: error.msg
+    })
+  })
+}
 </script>
 
 <style>

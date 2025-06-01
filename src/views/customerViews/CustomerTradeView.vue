@@ -20,19 +20,19 @@
             appendTo="body"
             class="w-full md:w-80"
             :scrollHeight="'200px'"
-            emptyFilterMessage="آیتمی یافت نشد"/>
+            emptyFilterMessage="آیتمی یافت نشد" />
         </div>
       </div>
       <div class="shadow w-full min-h-20 flex flex-col rounded-lg bg-gray-50 mt-2">
         <div class="p-4 lg:px-26 h-full relative flex-1">
           <template v-if="visiblePrices.length > 0">
-            <CustomerTrade :prices="visiblePrices" :pendingLogs="pendingLogs"/>
+            <CustomerTrade :prices="visiblePrices" :pendingLogs="pendingLogs" />
           </template>
           <template v-else>
             <template v-if="loading">
               <div class="grid grid-cols-3 gap-2 mb-2">
                 <Skeleton class="col-span-1 w-full rounded-lg h-20" height="2rem" v-for="item in Array(21)"
-                          :key="item"/>
+                          :key="item" />
               </div>
             </template>
             <div class="absolute inset-0 flex items-center justify-center" v-else>
@@ -76,11 +76,11 @@
       :breakpoints="{ '1199px': '45vw', '575px': '80vw' }"
     >
       <div>
-        <span class="text-center" v-format-number="remainedConfirmationData.geramAccountBalance"/>
+        <span class="text-center" v-format-number="remainedConfirmationData.geramAccountBalance" />
         گرم
       </div>
       <div>
-        <span class="text-center" v-format-number="remainedConfirmationData.moneyAccountBalance"/>
+        <span class="text-center" v-format-number="remainedConfirmationData.moneyAccountBalance" />
         ریال
       </div>
       <div class="mt-2 w-full flex justify-end gap-2">
@@ -88,207 +88,214 @@
                 icon="fa fa-cancel"
                 icon-pos="right"
                 @click="confirmLaterRemainedConfirmation"
-                severity="warn"/>
+                severity="warn" />
         <Button size="small" label="تایید میکنم"
                 icon="fa fa-check-circle"
                 icon-pos="right"
-                @click="confirmRemainedConfirmation"/>
+                @click="confirmRemainedConfirmation" />
       </div>
     </Dialog>
-    <CallButton :phone="phone" class="absolute right-0 bottom-0"/>
+    <CallButton :phone="phone" class="absolute right-0 bottom-0" />
   </div>
 </template>
 
 <script setup>
-import { computed, inject, onBeforeUnmount, onMounted, ref } from 'vue';
-import MultiSelect from 'primevue/multiselect';
-import { useUserStore } from '@/stores/userStore.js';
-import { useToast } from 'primevue/usetoast';
-import CallButton from '@/components/CallButton.vue';
-import CustomerTrade from '@/components/CustomerTrade.vue';
-import moment from 'moment-jalaali';
-import { useSettingsStore } from '@/stores/userSettings.js';
+import { computed, inject, onBeforeUnmount, onMounted, ref } from 'vue'
+import MultiSelect from 'primevue/multiselect'
+import { useUserStore } from '@/stores/userStore.js'
+import { useToast } from 'primevue/usetoast'
+import CallButton from '@/components/CallButton.vue'
+import CustomerTrade from '@/components/CustomerTrade.vue'
+import moment from 'moment-jalaali'
+import { useSettingsStore } from '@/stores/userSettings.js'
+import { useSelectedItemsStore } from '@/stores/selectedItemsStore.js'
 
-const repository = inject('repository');
-const dateTime = inject('dateTime');
-const userStore = useUserStore();
+const repository = inject('repository')
+const dateTime = inject('dateTime')
+const userStore = useUserStore()
+const selectedItemsStore = useSelectedItemsStore()
 
-const toast = useToast();
-const lastUpdateTime = ref('');
-const lastUpdateDay = ref('');
-const multiRef = ref(null);
-const adminMessage = ref('');
+const toast = useToast()
+const lastUpdateTime = ref('')
+const lastUpdateDay = ref('')
+const multiRef = ref(null)
+const adminMessage = ref('')
 
-const prices = ref([]);
-const loading = ref(true);
-const selectedItems = ref([]);
+const prices = ref([])
+const loading = ref(true)
+const selectedItems = computed({
+  get: () => selectedItemsStore.selectedItems,
+  set: (value) => { selectedItemsStore.selectedItems = value }
+})
 
-const priceInterval = ref(null);
-const priceIntervalTime = ref(5000);
+const priceInterval = ref(null)
+const priceIntervalTime = ref(5000)
 const remainedConfirmationData = ref({
   modalIsOpen: false,
   geramAccountBalance: 0,
   moneyAccountBalance: 0,
-  id: 0,
-});
+  id: 0
+})
 
-const logsInterval = ref(null);
-const logIntervalTime = ref(10000);
-const logs = ref([]);
+const logsInterval = ref(null)
+const logIntervalTime = ref(10000)
+const logs = ref([])
 
-const settingsStore = useSettingsStore();
+const settingsStore = useSettingsStore()
 
 const phone = computed(() => {
   if (settingsStore && settingsStore.settings && settingsStore.settings.onCall)
-    return settingsStore?.settings.onCall;
-  return '';
-});
+    return settingsStore?.settings.onCall
+  return ''
+})
 
 const visiblePrices = computed(
-  () => prices.value.filter((price) => selectedItems.value.includes(price.id)));
+  () => prices.value.filter((price) => selectedItems.value.includes(price.id)))
 
 onMounted(() => {
-  getPrices();
-  getAdminMessage();
-  getRemainedConfirmation();
+  getPrices()
+  getAdminMessage()
+  getRemainedConfirmation()
   priceInterval.value = setInterval(() => {
-    getPrices(false);
-  }, priceIntervalTime.value);
+    getPrices(false)
+  }, priceIntervalTime.value)
 
-  getLogs();
+  getLogs()
 
   logsInterval.value = setInterval(() => {
-    getLogs();
-  }, logIntervalTime.value);
-});
+    getLogs()
+  }, logIntervalTime.value)
+})
 
 onBeforeUnmount(() => {
-  if (priceInterval.value) clearInterval(priceInterval.value);
-  if (logsInterval.value) clearInterval(logsInterval.value);
-});
+  if (priceInterval.value) clearInterval(priceInterval.value)
+  if (logsInterval.value) clearInterval(logsInterval.value)
+})
 
 const getPrices = (firstTime = true) => {
   repository.getPriceList({ all: true }).then((response) => {
-    prices.value = response.data.prices.filter((prices) => prices.isActive);
+    prices.value = response.data.prices.filter((prices) => prices.isActive)
 
     lastUpdateTime.value = dateTime.getDate(response.data.lastUpdateTime, 'jMM/jDD', null,
-      true);
+      true)
 
-    lastUpdateDay.value = dateTime.getJalaliDay(moment(response.data.lastUpdateTime));
+    lastUpdateDay.value = dateTime.getJalaliDay(moment(response.data.lastUpdateTime))
     if (firstTime) {
-      loading.value = false;
-      selectedItems.value = prices.value.slice(0, 4).map((r) => r.id);
+      loading.value = false
+      if (selectedItems.value.length === 0) {
+        selectedItems.value = prices.value.slice(0, 4).map((r) => r.id)
+      }
     }
   }).catch((error) => {
-    console.log('error', error.msg);
+    console.log('error', error.msg)
     toast.add({
       severity: 'warn',
       summary: 'خطا',
       life: 3000,
-      detail: error.msg,
-    });
-  });
-};
+      detail: error.msg
+    })
+  })
+}
 
 const getAdminMessage = () => {
   repository.getAdminMessage().then((response) => {
     if (response.data.message.length) {
-      adminMessage.value = response.data.message;
+      adminMessage.value = response.data.message
       toast.add({
         severity: 'info',
         summary: 'پیام ادمین',
         life: 8000,
-        detail: response.data.message,
-      });
+        detail: response.data.message
+      })
     }
   }).catch((error) => {
     toast.add({
       severity: 'warn',
       summary: 'خطا',
       life: 3000,
-      detail: error.msg,
-    });
-  });
-};
+      detail: error.msg
+    })
+  })
+}
 
 const getRemainedConfirmation = () => {
   repository.remainedConfirmation({ userId: userStore.id }).then((response) => {
     if (Object.prototype.hasOwnProperty.call(response.data, 'info')) {
-      remainedConfirmationData.value.geramAccountBalance = response.data.info.geramAccountBalance;
-      remainedConfirmationData.value.moneyAccountBalance = +response.data.info.moneyAccountBalance;
-      remainedConfirmationData.value.id = +response.data.info.id;
-      remainedConfirmationData.value.modalIsOpen = true;
+      remainedConfirmationData.value.geramAccountBalance = response.data.info.geramAccountBalance
+      remainedConfirmationData.value.moneyAccountBalance = +response.data.info.moneyAccountBalance
+      remainedConfirmationData.value.id = +response.data.info.id
+      remainedConfirmationData.value.modalIsOpen = true
     }
   }).catch((error) => {
-    console.log('error', error.msg);
+    console.log('error', error.msg)
     toast.add({
       severity: 'warn',
       summary: 'خطا',
       life: 3000,
-      detail: error.msg,
-    });
-  });
-};
+      detail: error.msg
+    })
+  })
+}
 
 const confirmLaterRemainedConfirmation = () => {
   repository.updateRemainedConfirmation({ answer: 0, id: remainedConfirmationData.value.id }).then(() => {
-    remainedConfirmationData.value.modalIsOpen = false;
+    remainedConfirmationData.value.modalIsOpen = false
     toast.add({
       severity: 'success',
       summary: 'موفق',
       life: 3000,
-      detail: 'رد مانده حساب با موفقیت انجام شد',
-    });
-  });
-};
+      detail: 'رد مانده حساب با موفقیت انجام شد'
+    })
+  })
+}
 
 const confirmRemainedConfirmation = () => {
   repository.updateRemainedConfirmation({ answer: 1, id: remainedConfirmationData.value.id }).then(() => {
-    remainedConfirmationData.value.modalIsOpen = false;
+    remainedConfirmationData.value.modalIsOpen = false
     toast.add({
       severity: 'success',
       summary: 'موفق',
       life: 3000,
-      detail: 'تایید مانده حساب با موفقیت انجام شد',
-    });
-  });
-};
+      detail: 'تایید مانده حساب با موفقیت انجام شد'
+    })
+  })
+}
 
 const getLogs = () => {
   repository.getRequestLog({ userId: userStore.id }).then((response) => {
-    logs.value = response.data.requests;
-  });
-};
+    logs.value = response.data.requests
+  })
+}
 
-const pendingLogs = computed(() => logs.value.filter(log => log.state === -1));
+const pendingLogs = computed(() => logs.value.filter(log => log.state === -1))
 
 const getState = (state) => {
   {
     if (state === -1) {
       return {
         title: 'در انتظار',
-        class: 'text-blue bg-blue-50',
-      };
+        class: 'text-blue bg-blue-50'
+      }
     }
     if (state === 2) {
       return {
         title: 'رد شده',
-        class: 'text-red bg-red-50',
-      };
+        class: 'text-red bg-red-50'
+      }
     }
     if (state === 0) {
       return {
         title: 'بدون پاسخ',
-        class: 'text-yellow bg-yellow-50',
-      };
+        class: 'text-yellow bg-yellow-50'
+      }
     } else if (state === 3) {
       return {
         title: 'تایید',
-        class: 'text-primary bg-primary-50',
-      };
+        class: 'text-primary bg-primary-50'
+      }
     }
   }
-};
+}
 </script>
 
 <style>
