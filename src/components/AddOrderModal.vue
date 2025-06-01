@@ -8,7 +8,7 @@
   >
     <template #header>
       <div class="flex items-center w-full font-bold text-xl gap-1">
-        <TypeIcon :type="type"/>
+        <TypeIcon :type="type" />
         {{ isBuy ? 'خرید' : 'فروش' }}
         {{ ' ' + itemName }}
       </div>
@@ -18,7 +18,7 @@
       <template v-if="props.type === 1">
         <label class="block text-sm font-medium mb-1 text-right">وزن</label>
         <IconField>
-          <InputIcon class="fa fa-weight-hanging"/>
+          <InputIcon class="fa fa-weight-hanging" />
           <InputNumber
             v-model="weight"
             @update:modelValue="handleWeightInput"
@@ -37,7 +37,7 @@
 
         <label class="block text-sm font-medium mb-1 text-right mt-3">مبلغ</label>
         <IconField>
-          <InputIcon class="fa fa-money-bill-wave"/>
+          <InputIcon class="fa fa-money-bill-wave" />
           <InputNumber
             v-model="amount"
             @update:modelValue="handleAmountInput"
@@ -59,7 +59,7 @@
       <template v-else>
         <label class="block text-sm font-medium mb-1 text-right">تعداد</label>
         <IconField>
-          <InputIcon class="fa fa-layer-group"/>
+          <InputIcon class="fa fa-layer-group" />
           <InputNumber
             v-model="count"
             :invalid="!!errors.count"
@@ -78,7 +78,7 @@
       <!-- فیلد مشترک توضیحات -->
       <label class="block text-sm font-medium mb-1 text-right mt-3">توضیحات</label>
       <IconField>
-        <InputIcon class="fa fa-comment"/>
+        <InputIcon class="fa fa-comment" />
         <InputText
           v-model="description"
           class="w-full"
@@ -89,7 +89,7 @@
 
       <div class="flex items-center justify-between mt-2">
         <div class="flex items-center">
-          <i class="fa-solid fa-arrow-down ml-1 text-sm"/>
+          <i class="fa-solid fa-arrow-down ml-1 text-sm" />
           حداقل
           <span class="mx-1 text-blue-500 font-bold">
             {{ min }}
@@ -97,7 +97,7 @@
           {{ type === 1 ? 'گرم' : 'عدد' }}
         </div>
         <div class="flex items-center">
-          <i class="fa-solid fa-arrow-up ml-1 text-sm"/>
+          <i class="fa-solid fa-arrow-up ml-1 text-sm" />
           حداکثر
           <span class="mx-1 text-red-500 font-bold">
             {{ max }}
@@ -110,10 +110,10 @@
       <div class="flex justify-end gap-2 mt-4">
         <div class="flex gap-2 mt-2 items-center justify-end">
           <Button size="small" severity="warn" label="بستن" @click="cancel" icon="fa fa-cancel"
-                  icon-pos="right"/>
+                  icon-pos="right" />
           <Button size="small" severity="info" label="ثبت و ادامه" @click="handleFormSubmit"
                   icon-pos="right"
-                  icon="fa fa-check-circle"/>
+                  icon="fa fa-check-circle" />
         </div>
       </div>
     </form>
@@ -121,142 +121,142 @@
 </template>
 
 <script setup>
-import { computed, nextTick, ref } from 'vue';
-import * as z from 'zod';
-import { useForm } from 'vee-validate';
-import { toTypedSchema } from '@vee-validate/zod';
-import TypeIcon from '@/components/TypeIcon.vue';
+import { computed, nextTick, ref } from 'vue'
+import * as z from 'zod'
+import { useForm } from 'vee-validate'
+import { toTypedSchema } from '@vee-validate/zod'
+import TypeIcon from '@/components/TypeIcon.vue'
 
-const emit = defineEmits(['update:isOpen', 'submit', 'cancel']);
+const emit = defineEmits(['update:isOpen', 'submit', 'cancel'])
 const props = defineProps({
   isOpen: {
     type: Boolean,
-    default: false,
+    default: false
   },
   header: {
     type: String,
-    default: '',
+    default: ''
   },
   type: {
     type: Number,
-    default: 1,
+    default: 1
   },
   price: {
     type: Number,
-    required: true,
+    required: true
   },
   isBuy: {
     type: Boolean,
-    default: true,
+    default: true
   },
   defaultValue: {
     type: Object,
-    default: () => {},
+    default: () => {}
   },
   rate: {
     type: Number,
-    default: 1,
+    default: 1
   },
   itemName: {
     type: String,
-    default: '',
+    default: ''
   },
   min: {
     type: Number,
-    default: 1,
+    default: 1
   },
   max: {
     type: Number,
-    default: 1,
-  },
-});
-const isChangingAmount = ref(false);
+    default: 1
+  }
+})
+const isChangingAmount = ref(false)
 
 const schema = computed(() => {
   if (props.type === 1) {
     return z.object({
       weight: z.number({ required_error: 'وزن الزامی است', invalid_type_error: 'وزن الزامی است' }).
-        min(props.min, 'وزن نمی‌تواند کمتر از حد مجاز باشد').
-        max(props.max, 'وزن نمی‌تواند بیشتر از حد مجاز باشد'),
+        min(props.min, 'وزن باید حداقل ' + props.min + ' باشد').
+        max(props.max, 'وزن باید حداکثر ' + props.max + ' باشد'),
       amount: z.number({ required_error: 'مبلغ الزامی است', invalid_type_error: 'مبلغ الزامی است' }).
-        min(0, 'مبلغ نمی‌تواند منفی باشد'),
-    });
+        min(0, 'مبلغ نمی‌تواند منفی باشد')
+    })
   } else {
     return z.object({
       count: z.number({ required_error: 'تعداد الزامی است', invalid_type_error: 'تعداد الزامی است' }).
         int('تعداد باید عدد صحیح باشد').
-        min(props.min, 'تعداد باید حداقل ۱ باشد').
-        max(props.max, 'تعداد نمی‌تواند بیشتر از حد مجاز باشد'),
-    });
+        min(props.min, 'تعداد باید حداقل ' + props.min + ' باشد').
+        max(props.max, 'تعداد باید حداکثر ' + props.max + ' باشد')
+    })
   }
-});
+})
 
 const { errors, handleSubmit, defineField, resetForm } = useForm({
   validationSchema: computed(() => {
-    return toTypedSchema(schema.value);
-  }),
-});
+    return toTypedSchema(schema.value)
+  })
+})
 
-const [weight] = defineField('weight');
-const [amount] = defineField('amount');
-const [count] = defineField('count');
-const [description] = defineField('description');
+const [weight] = defineField('weight')
+const [amount] = defineField('amount')
+const [count] = defineField('count')
+const [description] = defineField('description')
 
 const localVisible = computed({
   get: () => props.isOpen,
-  set: (val) => {emit('update:isOpen', val);},
-});
+  set: (val) => {emit('update:isOpen', val)}
+})
 
 const handleFormSubmit = handleSubmit((values) => {
-  console.log('description:', description.value);
-  console.log('values:', values);
-  emit('submit', { ...values, description: description.value ? description.value : '', type: props.type });
-});
+  console.log('description:', description.value)
+  console.log('values:', values)
+  emit('submit', { ...values, description: description.value ? description.value : '', type: props.type })
+})
 
 const cancel = () => {
-  emit('cancel');
-};
+  emit('cancel')
+}
 
 const handleRealTimeCalculation = () => {
   if (props.type === 1 && props.price !== null && weight.value !== null) {
-    isChangingAmount.value = true;
-    amount.value = (props.price / props.rate) * weight.value;
+    isChangingAmount.value = true
+    amount.value = (props.price / props.rate) * weight.value
     nextTick(() => {
-      isChangingAmount.value = false;
-    });
+      isChangingAmount.value = false
+    })
   }
-};
+}
 
 const handleWeightInput = (value) => {
-  weight.value = value;
-  handleRealTimeCalculation();
-};
+  weight.value = value
+  handleRealTimeCalculation()
+}
 
 const handleAmountInput = (value) => {
-  if (isChangingAmount.value) return;
-  amount.value = value;
+  if (isChangingAmount.value) return
+  amount.value = value
   if (props.type === 1 && value !== null && props.price !== null && props.price !== 0) {
-    isChangingAmount.value = true;
-    weight.value = (value * props.rate) / props.price;
+    isChangingAmount.value = true
+    weight.value = (value * props.rate) / props.price
     nextTick(() => {
-      isChangingAmount.value = false;
-    });
+      isChangingAmount.value = false
+    })
   }
-};
+}
 
 const resetOrderForm = () => {
-  console.log('resetOrderForm: in co');
+  console.log('resetOrderForm: in co')
   resetForm({
     values: {
       weight: null,
       amount: null,
       count: null,
-      description: '',
-    },
-  });
-};
+      description: ''
+    }
+  })
+}
 
 defineExpose({
-  resetOrderForm,
-});
+  resetOrderForm
+})
 </script>
