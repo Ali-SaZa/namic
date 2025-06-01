@@ -390,6 +390,10 @@ class ApiRepository {
   getTotalSummaryDetail(data={}){
     return this.http.post('balance/totalSummaryDetail.php', data)
   }
+
+  updateUserPassword(data={}){
+    return this.http.post('users/changeUserPass.php', data)
+  }
 }
 
 const repository = new ApiRepository();
