@@ -89,7 +89,7 @@ const props = defineProps({
 const dateTime = inject('dateTime')
 
 const download = () => {
-  window.open(`${apiUrl}attachments/${props.fileName}`, '_blank')
+  window.open(`${apiUrl}/attachments/${props.fileName}`, '_blank')
 }
 
 const check = () => {

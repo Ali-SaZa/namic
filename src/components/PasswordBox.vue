@@ -51,7 +51,7 @@ const { handleSubmit, errors, defineField, isSubmitting } = useForm({
 const [password] = defineField('password')
 
 const onSubmit = handleSubmit((values) => {
-  const hashedPassword = md5(values.password);
+  const hashedPassword = values.password;
   emit('submit', hashedPassword);
 }, (errors) => {
   console.log('Validation errors:', errors)
