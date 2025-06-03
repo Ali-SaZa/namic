@@ -48,7 +48,7 @@
           @change="setProfitCalculationMethod"
         />
       </div>
-      <DateRange @submit-date-range="filterDate" />
+      <DateRange class="mt-2" @submit-date-range="filterDate" />
     </div>
     <div class="col-span-1 lg:col-span-3 rounded-lg shadow bg-gray-50 p-4 relative">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
@@ -167,8 +167,12 @@ const prepareBalance = (prices, balances) => {
     type: prices.find(priceItem => priceItem.id === balanceItem.priceId)?.type || 1
   }))
 
-  const gramiPrice = prices.find(priceItem => priceItem.name === 'گرمی').price
-  const kiloPrice = prices.find(priceItem => priceItem.name === 'کیلو').price
+   // TODO: Please Remove Comment if new gramiPrice & kiloPrice is ok
+  // const gramiPrice = prices.find(priceItem => priceItem.name === 'گرمی').price
+  // const kiloPrice = prices.find(priceItem => priceItem.name === 'کیلو').price
+
+  const gramiPrice = prices.find((priceItem) => priceItem.type === 1).price
+  const kiloPrice = prices.find((priceItem) => priceItem.type === 2).price
 
   newBalance.forEach((balanceItem) => {
     if (balanceItem.type === 1) {

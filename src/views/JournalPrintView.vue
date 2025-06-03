@@ -59,7 +59,7 @@ onMounted(() => {
 })
 
 const getDayFilters = () => {
-  repository.getDataSummaryReport().then((response) => {
+  repository.getDataSummaryReport({states: '3,4'}).then((response) => {
     dayFilters.value = response.data.summary
     filteredDay.value = dayFilters.value[0]
     filters.value.diff = filteredDay.value.diff

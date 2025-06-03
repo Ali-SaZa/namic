@@ -70,7 +70,7 @@
       </div>
       <template v-if="step === 2">
         <div class="grid grid-cols-1 gap-y-4 lg:gap-y-0 lg:gap-x-8 lg:grid-cols-4 mt-2">
-          <div class="col-span-1 rounded-lg shadow bg-gray-50 p-4 max-h-26">
+          <div class="col-span-1 rounded-lg shadow bg-gray-50 p-4 max-h-52">
             <DateRange @submit-date-range="filterDateRange"/>
           </div>
           <template v-if="selectedAttachment.hasOwnProperty('attachments') && selectedAttachment.attachments.length">

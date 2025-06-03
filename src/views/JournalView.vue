@@ -29,7 +29,7 @@
           :day-filters="dayFilters"
           :filtered-day="filteredDay"
           @selectDay="filterReportDiff"
-          class="mt-2"
+          class="my-2"
         />
         <DateRange @submit-date-range="filterDateRange" />
         <label class="block text-sm font-medium mt-2 text-right">نحوه نمایش اسناد</label>
@@ -161,7 +161,9 @@ const getTotalSummary = () => {
 
 const getDayFilters = () => {
   repository
-    .getDataSummaryReport()
+    .getDataSummaryReport({
+      states:'3,4'
+    })
     .then((response) => {
       dayFilters.value = response.data.summary
       filteredDay.value = dayFilters.value[0]

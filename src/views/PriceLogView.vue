@@ -1,6 +1,6 @@
 <template>
   <div class="grid grid-cols-1 gap-y-4 lg:gap-y-0 lg:gap-x-8 lg:grid-cols-4">
-    <div class="col-span-1 rounded-lg shadow bg-gray-50 p-4 max-h-26">
+    <div class="col-span-1 rounded-lg shadow bg-gray-50 p-4 max-h-52">
       <div class="flex items-center w-full">
         <DateRange @submit-date-range="submitDateFilter"/>
       </div>
