@@ -4,25 +4,41 @@
       <!-- (start) -->
       <div class="flex-1">
         <span class="text-xs block mb-1">از تاریخ</span>
-        <vue-date-picker
-          v-model="startDate"
-          :format="format"
-          :display-format="displayFormat"
-          color="#0ea5e9"
-          class="w-full"
-        />
+        <div class="flex items-center gap-2">
+          <vue-date-picker
+            v-model="startDate"
+            :format="format"
+            :display-format="displayFormat"
+            color="#0ea5e9"
+            class="w-full"
+          />
+          <Button variant="outlined"
+                  @click="()=>{startDate=null}"
+                  size="small"
+                  icon="fa fa-trash"
+                  severity="danger"
+                  style="height: 40px;width: max-content;max-width: max-content; min-width: 40px" />
+        </div>
       </div>
 
       <!-- (end) -->
       <div class="flex-1">
         <span class="text-xs block mb-1">تا تاریخ</span>
-        <vue-date-picker
-          v-model="endDate"
-          :format="format"
-          :display-format="displayFormat"
-          color="#0ea5e9"
-          class="w-full"
-        />
+        <div class="flex items-center gap-2">
+          <vue-date-picker
+            v-model="endDate"
+            :format="format"
+            :display-format="displayFormat"
+            color="#0ea5e9"
+            class="w-full"
+          />
+          <Button variant="outlined"
+                  @click="()=>{endDate=null}"
+                  size="small"
+                  icon="fa fa-trash"
+                  severity="danger"
+                  style="height: 40px;width: max-content;max-width: max-content; min-width: 40px" />
+        </div>
       </div>
 
       <!-- action -->
