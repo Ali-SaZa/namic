@@ -1,7 +1,7 @@
 <template>
   <div class="w-full">
     <div class="flex flex-col gap-2">
-      <!-- (start) -->
+
       <div class="flex-1">
         <span class="text-xs block mb-1">از تاریخ</span>
         <div class="flex items-center gap-2">
@@ -21,7 +21,6 @@
         </div>
       </div>
 
-      <!-- (end) -->
       <div class="flex-1">
         <span class="text-xs block mb-1">تا تاریخ</span>
         <div class="flex items-center gap-2">
@@ -47,7 +46,9 @@
         @click="submitDateRange"
         size="small"
         class="w-full"
-        label="جستجو"
+        icon="fa fa-filter"
+        icon-pos="right"
+        label="فیلتر براساس تاریخ"
       />
     </div>
   </div>
