@@ -78,7 +78,7 @@
               </span>
               <div class="flex gap-2 mt-2">
                 <img
-                  :src="`${apiUrl}auth/${attachment.fileName}`"
+                  :src="`${apiUrl}/attachments/${attachment.fileName}`"
                   class="w-40 h-40 object-contain">
                 <div>
                   {{ attachment.detail }}
@@ -107,7 +107,7 @@ import { useToast } from 'primevue/usetoast';
 import { useUserStore } from '@/stores/userStore.js';
 import DateRange from '@/components/DateRange.vue';
 
-const apiUrl = import.meta.env.VITE_PICS_URL;
+const apiUrl = import.meta.env.VITE_SERVER_ATTACHMENTS_URL;
 
 const toast = useToast();
 const userStore = useUserStore();
