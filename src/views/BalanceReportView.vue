@@ -167,10 +167,6 @@ const prepareBalance = (prices, balances) => {
     type: prices.find(priceItem => priceItem.id === balanceItem.priceId)?.type || 1
   }))
 
-   // TODO: Please Remove Comment if new gramiPrice & kiloPrice is ok
-  // const gramiPrice = prices.find(priceItem => priceItem.name === 'گرمی').price
-  // const kiloPrice = prices.find(priceItem => priceItem.name === 'کیلو').price
-
   const gramiPrice = prices.find((priceItem) => priceItem.type === 1).price
   const kiloPrice = prices.find((priceItem) => priceItem.type === 2).price
 
@@ -191,7 +187,6 @@ const prepareBalance = (prices, balances) => {
 
       const diff = balanceItem.buy - balanceItem.sell
 
-      console.log('diff:', diff)
       balanceItem.additionalProfit = Math.abs(diff) * (
         diff >= 0
           ? ((balanceItem.boardFee - balanceItem.fiIn) / balanceItem.rate)
