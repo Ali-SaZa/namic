@@ -414,8 +414,6 @@ const moneyUnits = ref([
   { id: 2, label: 'تومان IRT' },
 ])
 
-console.log(settingsData.value)
-
 const adminStayOnline = ref(false)
 const RequestsSum = ref(false)
 const DocRegistration = ref(false)

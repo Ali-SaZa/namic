@@ -8,19 +8,40 @@
           <span class="text-red-500 mr-1">{{ lastUpdateDay }}</span>
         </div>
         <div class="col-span-2 md:col-span-1 text-left">
-          <MultiSelect
-            filter
-            ref="multiRef"
-            v-model="selectedItems"
-            :options="prices"
-            optionLabel="name"
-            optionValue="id"
-            placeholder="انتخاب همه"
-            :maxSelectedLabels="prices.length"
-            appendTo="body"
-            class="w-full md:w-80"
-            :scrollHeight="'200px'"
-            emptyFilterMessage="آیتمی یافت نشد" />
+          <template v-if="displayType==='page'">
+            <MultiSelect
+              filter
+              ref="multiRef"
+              v-model="selectedItems"
+              :options="prices"
+              optionLabel="name"
+              optionValue="id"
+              placeholder="انتخاب همه"
+              :maxSelectedLabels="prices.length"
+              appendTo="body"
+              class="w-full md:w-80"
+              :scrollHeight="'200px'"
+              emptyFilterMessage="آیتمی یافت نشد" />
+          </template>
+          <template v-if="displayType==='group'">
+            <ButtonGroup class="w-full">
+              <Button
+                label="گرمی"
+                size="small"
+                :severity="reportKind === 1 ? 'info' : 'secondary'"
+                @click="()=>reportKind=1"
+                class="min-w-1/2"
+              />
+              <Button
+                label="سکه"
+                size="small"
+                :severity="reportKind === 2 ? 'info' : 'secondary'"
+                @click="()=>reportKind=2"
+                class="min-w-1/2"
+              />
+            </ButtonGroup>
+
+          </template>
         </div>
       </div>
       <div class="shadow w-full min-h-20 flex flex-col rounded-lg bg-gray-50 mt-2">
@@ -114,12 +135,14 @@ const repository = inject('repository')
 const dateTime = inject('dateTime')
 const userStore = useUserStore()
 const selectedItemsStore = useSelectedItemsStore()
+const settingsStore = useSettingsStore()
 
 const toast = useToast()
 const lastUpdateTime = ref('')
 const lastUpdateDay = ref('')
 const multiRef = ref(null)
 const adminMessage = ref('')
+const reportKind = ref(1)
 
 const prices = ref([])
 const loading = ref(true)
@@ -141,16 +164,22 @@ const logsInterval = ref(null)
 const logIntervalTime = ref(10000)
 const logs = ref([])
 
-const settingsStore = useSettingsStore()
-
 const phone = computed(() => {
   if (settingsStore && settingsStore.settings && settingsStore.settings.onCall)
     return settingsStore?.settings.onCall
   return ''
 })
 
-const visiblePrices = computed(
-  () => prices.value.filter((price) => selectedItems.value.includes(price.id)))
+const displayType = computed(() => {
+  if (settingsStore && settingsStore.settings && settingsStore.settings.priceBoard)
+    return settingsStore?.settings.priceBoard
+})
+
+const visiblePrices = computed(() => {
+  if (displayType.value === 'page') return prices.value.filter((price) => selectedItems.value.includes(price.id))
+  else if (displayType.value === 'group') return prices.value.filter((price) => price.type === reportKind.value)
+  else return prices.value
+})
 
 onMounted(() => {
   getPrices()

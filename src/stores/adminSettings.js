@@ -92,15 +92,6 @@ export const useAdminSettingsStore = defineStore('adminSettings', () => {
     return saveSettings()
   }
 
-  // ذخیره خودکار هنگام تغییر تنظیمات
-  // watch(
-  //   settings,
-  //   () => {
-  //     saveSettings()
-  //   },
-  //   { deep: true }
-  // )
-
   return {
     settings,
     viewOptions,
