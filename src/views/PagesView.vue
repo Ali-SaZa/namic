@@ -13,36 +13,35 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useUserStore } from '@/stores/userStore.js';
-import { getRoutesBasedOnUserType } from '@/router/index.js';
+import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/userStore.js'
+import { getRoutesBasedOnUserType } from '@/router/index.js'
 
-const router = useRouter();
-const userStore = useUserStore();
-const expandedKeys = ref({});
-const availableRoutes = getRoutesBasedOnUserType(userStore?.userType);
-const user = computed(() => userStore.user);
+const router = useRouter()
+const userStore = useUserStore()
+const expandedKeys = ref({})
+const availableRoutes = getRoutesBasedOnUserType(userStore?.userType)
+const user = computed(() => userStore.user)
 
-// فیلتر کردن مسیرهایی که در bottom navigation نیستند
 const mobileMenuItems = computed(() => {
-  if (!user.value) return [];
+  if (!user.value) return []
 
   let mainRoutes = availableRoutes.filter(
-    route => route.name && route.faName && route.meta?.requiresAuth && !route.bottomNavigationPosition);
+    route => route.name && route.faName && route.meta?.requiresAuth && !route.bottomNavigationPosition &&
+      !route.meta?.hideInSidebar)
 
   if (userStore?.userType === 4 && user.value.isAuthenticated === '1') {
-    mainRoutes = mainRoutes.filter(r => r.name !== 'authentication');
+    mainRoutes = mainRoutes.filter(r => r.name !== 'authentication')
   }
 
-  return createPanelMenuItems(mainRoutes);
-});
+  return createPanelMenuItems(mainRoutes)
+})
 
-// ساختار منو برای پنل منو
 const createPanelMenuItems = (routesArray, parentKey = '') => {
   return routesArray.map((item, index) => {
-    const key = parentKey ? `${parentKey}_${index}` : `${index}`;
-    const hasChildren = item.children && item.children.length > 0;
+    const key = parentKey ? `${parentKey}_${index}` : `${index}`
+    const hasChildren = item.children && item.children.length > 0
 
     return {
       key,
@@ -52,27 +51,27 @@ const createPanelMenuItems = (routesArray, parentKey = '') => {
       command: hasChildren
         ? () => toggleMenu(key)
         : () => {
-          router.push({ name: item.name });
+          router.push({ name: item.name })
         },
       class: !hasChildren && router.currentRoute.value.name === item.name
         ? 'active-menu-item'
-        : '',
-    };
-  });
-};
+        : ''
+    }
+  })
+}
 
 const onPanelClick = (event) => {
   if (event.item.items) {
-    toggleMenu(event.item.key);
+    toggleMenu(event.item.key)
   }
-};
+}
 
 const toggleMenu = (key) => {
   expandedKeys.value = {
     ...expandedKeys.value,
-    [key]: !expandedKeys.value[key],
-  };
-};
+    [key]: !expandedKeys.value[key]
+  }
+}
 </script>
 
 <style scoped>

@@ -191,10 +191,14 @@ const createMenuKeys = (routes, parentKey = '') => {
 }
 
 const menuItemsWithKeys = computed(() => {
-  // مقدار پیش‌فرض زمانی که user وجود ندارد
   if (!user.value) return []
 
-  let mainRoutes = availableRoutes.filter(route => route.name && route.faName && route.meta?.requiresAuth)
+  let mainRoutes = availableRoutes.filter(route =>
+    route.name &&
+    route.faName &&
+    route.meta?.requiresAuth &&
+    !route.meta?.hideInSidebar
+  )
 
   if (userStore?.userType === 4 && user.value.isAuthenticated === '1') {
     mainRoutes = mainRoutes.filter(r => r.name !== 'authentication')

@@ -355,7 +355,6 @@ const adminRoutes = [
       layout: 'DefaultLayout'
     }
   },
-  //TODO : remove from side nav
   {
     path: '/requests/customer/:id',
     name: 'CustomerRequests',
@@ -364,7 +363,8 @@ const adminRoutes = [
     component: UserRequestsView,
     meta: {
       requiresAuth: true,
-      layout: 'DefaultLayout'
+      layout: 'DefaultLayout',
+      hideInSidebar: true
     }
   },
   {
@@ -375,7 +375,8 @@ const adminRoutes = [
     component: AccountBalance,
     meta: {
       requiresAuth: true,
-      layout: 'DefaultLayout'
+      layout: 'DefaultLayout',
+      hideInSidebar: true
     }
   }
 ]
