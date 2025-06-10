@@ -86,9 +86,9 @@ const repository = inject('repository')
 const loading = ref(false)
 const accountGroup = ref([])
 
-onMounted(() => {
-  fetchUsers()
-  getAccountGroups()
+onMounted(async () => {
+  await getAccountGroups()
+  await fetchUsers()
 })
 
 const askForDeleteUser = (user) => {
@@ -156,6 +156,7 @@ const getAccountGroups = async () => {
     const response = await repository.getUserGroupList()
     if (response.data.state) {
       accountGroup.value = response.data.userGroup
+      console.log(accountGroup.value)
     } else {
       toast.add({
         severity: 'error',

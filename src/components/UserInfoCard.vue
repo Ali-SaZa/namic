@@ -67,7 +67,7 @@
     </Dialog>
     <UserEditModal v-model:isOpen="editModalIsOpen" :header="editHeader" :userData="userData"
                    :userPricesData="userPricesData"
-                   :accountGroup="localAccountGroup"
+                   :accountGroup="accountGroup"
                    @getAccountGroups="getAccountGroups"/>
     <UserEditItemModal v-model:isOpen="editItemsModalIsOpen"
                        :userPricesData="userPricesData"
@@ -245,7 +245,6 @@ const editUser = () => {
       userData.value = response.data.user;
       userPricesData.value = response.data.prices;
       editModalIsOpen.value = true;
-      localAccountGroup.value = props.accountGroup;
     } else {
       toast.add({
         severity: 'error',
