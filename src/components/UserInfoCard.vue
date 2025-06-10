@@ -78,7 +78,7 @@
 
 <script setup>
 import defaultAvatar from '@/assets/images/avatar.png';
-import { inject, ref, watch } from 'vue';
+import { computed, inject, ref, watch } from 'vue'
 import { useToast } from 'primevue/usetoast';
 import { useRouter } from 'vue-router';
 import UserRoleIcon from './UserRoleIcon.vue';
@@ -99,6 +99,7 @@ const props = defineProps({
   isActive: Boolean,
   phoneNumber: String,
   accountGroup: Array,
+  hasPDF: Boolean
 });
 
 const emit = defineEmits(['deleteUser', 'getAccountGroups']);
@@ -118,39 +119,54 @@ const messageText = ref(
 const userData = ref({});
 const userPricesData = ref({});
 
-const items = [
-  { label: 'ویرایش', icon: 'fa-solid fa-edit', command: () => editUser() },
-  {
-    label: 'ویرایش آیتم‌ها', icon: 'fa-solid fa-bars',
-    command: () => editUserItems(),
-  },
-  {
-    label: 'پیام',
-    icon: 'fa-solid fa-comments',
-    command: () => (messageDialogIsOpen.value = true),
-  },
-  {
-    label: 'آیتم‌ها', icon: 'fa-solid fa-bars',
-    command: () => router.replace({
-      path: '/manual-document',
-      query: { userId: props.id },
-    }),
-  },
-  {
-    label: 'اسناد',
-    icon: 'fa-solid fa-file-invoice',
-    command: () => router.push(`/requests/customer/${props.id}`),
-  },
-  {
-    label: 'حذف',
-    icon: 'pi pi-trash',
-    command: () =>
-      emit('deleteUser', {
-        id: props.id,
-        name: props.firstName,
+const items = computed(() => {
+  const baseItems = [
+    { label: 'ویرایش', icon: 'fa-solid fa-edit', command: () => editUser() },
+    {
+      label: 'ویرایش آیتم‌ها', icon: 'fa-solid fa-bars',
+      command: () => editUserItems(),
+    },
+    {
+      label: 'پیام',
+      icon: 'fa-solid fa-comments',
+      command: () => (messageDialogIsOpen.value = true),
+    },
+    {
+      label: 'آیتم‌ها', icon: 'fa-solid fa-bars',
+      command: () => router.replace({
+        path: '/manual-document',
+        query: { userId: props.id },
       }),
-  },
-];
+    }
+  ];
+
+  if (props.hasPDF) {
+    baseItems.push({
+      label: 'فاکتور‌ها',
+      icon: 'fa-solid fa-file-pdf',
+      command: () => router.push(`/balance/accountBalance/${props.id}`),
+    });
+  }
+
+  baseItems.push(
+    {
+      label: 'اسناد',
+      icon: 'fa-solid fa-file-invoice',
+      command: () => router.push(`/requests/customer/${props.id}`),
+    },
+    {
+      label: 'حذف',
+      icon: 'pi pi-trash',
+      command: () =>
+        emit('deleteUser', {
+          id: props.id,
+          name: props.firstName,
+        }),
+    }
+  );
+
+  return baseItems;
+});
 
 const userRole = (lastName, role) => {
   const roles = {

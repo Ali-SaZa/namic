@@ -366,6 +366,17 @@ const adminRoutes = [
       requiresAuth: true,
       layout: 'DefaultLayout'
     }
+  },
+  {
+    path: '/balance/accountBalance/:id',
+    name: 'balance-accountBalance',
+    faName: 'فاکتورهای‌ کاربر',
+    icon: 'fa-solid fa-wallet',
+    component: AccountBalance,
+    meta: {
+      requiresAuth: true,
+      layout: 'DefaultLayout'
+    }
   }
 ]
 

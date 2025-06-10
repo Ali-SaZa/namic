@@ -84,7 +84,7 @@
           </div>
         </template>
         <template v-else>
-           <UserRequestTable :sampleData="customerRequestList"/>
+          <UserRequestTable :sampleData="customerRequestList" />
         </template>
       </div>
     </div>
@@ -92,8 +92,6 @@
 </template>
 
 <script setup>
-import { sampleData } from '@/utils/mockData.js'
-
 import { inject, onMounted, ref, watch } from 'vue'
 import DateRange from '@/components/DateRange.vue'
 import ItemCard from '@/components/ItemCard.vue'
@@ -101,20 +99,22 @@ import PrintButton from '@/components/PrintButton.vue'
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/userStore.js'
 import UserRequestTable from '@/components/Tables/UserRequestTable.vue'
+import { useToast } from 'primevue/usetoast'
+
 const dateTime = inject('dateTime')
+const toast = useToast()
 
 const lastUpdateDate = ref('')
 const userStore = useUserStore()
 const route = useRoute()
 const userId = ref(route.params.id)
 const filteredType = ref(1)
-const filteredDay = ref(1)
 const dayFilters = ref(null)
 const fromDate = ref('')
 const selectedView = ref({ name: 'کارت', icon: 'fa-solid fa-table-cells' })
 const viewTypes = ref([
   { name: 'جدول', icon: 'fa-solid fa-table-cells' },
-  { name: 'کارت', icon: 'fa-solid fa-window-maximize' },
+  { name: 'کارت', icon: 'fa-solid fa-window-maximize' }
 ])
 const repository = inject('repository')
 const customerRequestList = ref([])
@@ -125,7 +125,7 @@ const requestDateSummary = async () => {
     const response = await repository.requestDateSummary({
       uName: userStore.user.userName,
       states: filteredType.value === 1 ? '3,4' : '1',
-      userId: userId.value,
+      userId: userId.value
     })
 
     if (response) {
@@ -146,7 +146,7 @@ const getCustomerList = async () => {
       reportKind: filteredType.value - 1,
       diff: diff.value,
       userId: userId.value,
-      uName: userStore.user.userName,
+      uName: userStore.user.userName
     }
 
     if (fromDate.value) {
@@ -193,7 +193,7 @@ const editItem = (item) => {
     registrarName: userStore.user.name,
     fi: item.price,
     customerMsg: item.customerMsg,
-    uName: userStore.user.userName,
+    uName: userStore.user.userName
   }
 
   if (item.priceType === 1) {

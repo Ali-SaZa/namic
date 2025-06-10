@@ -5,6 +5,14 @@
               label="دریافت آخرین دیتا"
               severity="info"
               @click="getRemained" icon="fa-solid fa-refresh" />
+      <template v-if="userId">
+        <Button
+          @click="back"
+          icon="pi pi-arrow-left"
+          severity="secondary"
+          class="mr-2"
+        />
+      </template>
     </div>
     <div class="w-full md:w-[440px] rounded-lg bg-gray-50 p-4">
       <template v-if="loading">
@@ -13,7 +21,6 @@
         </div>
       </template>
       <template v-else>
-        <!--        @click="downloadFile(item.id,item.path)"-->
         <template v-if="paths.length">
           <a v-for="item in paths" :key="item.id"
              :href="item.path +'?'+ random()"
@@ -39,9 +46,13 @@
 <script setup>
 import { inject, onMounted, ref } from 'vue'
 import { useUserStore } from '@/stores/userStore.js'
+import { useRoute } from 'vue-router'
+import Button from 'primevue/button'
 
 const userStore = useUserStore()
 const repository = inject('repository')
+const route = useRoute()
+const userId = ref(route.params.id)
 
 const loading = ref(true)
 const paths = ref([])
@@ -52,18 +63,22 @@ onMounted(() => {
 
 const getRemained = () => {
   loading.value = true
-  repository.getRemained({ userId: userStore.id }).then((response) => {
+  const id = userId.value ? userId.value : userStore.id
+  repository.getRemained({ userId: id }).then((response) => {
     const accountId = response.data.accountCodes
-    repository.getAccountTurnover({ userId: userStore.id, accountId }).then((getAccountTurnoverResponse) => {
+    repository.getAccountTurnover({ userId: id, accountId }).then((getAccountTurnoverResponse) => {
       paths.value = Object.values(getAccountTurnoverResponse.data.paths)
-
+    }).finally(() => {
+      loading.value = false
     })
-  }).finally(() => {
-    loading.value = false
   })
 }
 
 const random = () => {
   return Math.floor(Math.random() * 1000)
+}
+
+const back = () => {
+  window.history.back()
 }
 </script>
