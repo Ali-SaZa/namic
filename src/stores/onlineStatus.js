@@ -54,7 +54,6 @@ export const useOnlineStatusStore = defineStore('onlineStatus', () => {
       apiPollingStore.addPollingTask({
         requestName: 'getAdminState',
         threshold: 5000,
-        // TODO enable this
         isActive: true,
       });
 

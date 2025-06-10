@@ -18,12 +18,12 @@
           </div>
           <div class="flex justify-between items-center">
             <div class="flex gap-2">
-              <ThemeToggle/>
-              <OnlineToggle v-if="userStore.userType===1"/>
+              <ThemeToggle />
+              <OnlineToggle v-if="userStore.userType===1" />
             </div>
             <Button size="small" variant="outlined" icon="fa fa-arrow-right-from-bracket"
                     @click="logOutModalIsOpen = true"
-                    severity="danger" class="h-7 !w-7 ml-2"/>
+                    severity="danger" class="h-7 !w-7 ml-2" />
           </div>
         </div>
         <div
@@ -31,7 +31,7 @@
           <span>
             {{ currentRoute.faName }}
           </span>
-          <i :class="currentRoute.icon"/>
+          <i :class="currentRoute.icon" />
         </div>
       </div>
       <div class="hidden lg:flex items-center">
@@ -40,9 +40,9 @@
           <span>
             {{ currentRoute.faName }}
           </span>
-          <i :class="currentRoute.icon"/>
+          <i :class="currentRoute.icon" />
         </div>
-        <Button icon="pi pi-bars" variant="text" @click="visible = true"/>
+        <Button icon="pi pi-bars" variant="text" @click="visible = true" />
       </div>
     </div>
 
@@ -50,37 +50,37 @@
       <template #container="{ closeCallback }">
         <div class="flex flex-col h-full">
           <div class="flex items-center justify-end px-6 pt-4 shrink-0">
-            <Button type="button" @click="closeCallback" icon="pi pi-times" rounded outlined/>
+            <Button type="button" @click="closeCallback" icon="pi pi-times" rounded outlined />
           </div>
           <div class="overflow-y-auto p-4 panelmenu-wrapper min-h-[93dvh] flex flex-col justify-between gap-2">
             <div>
-             <PanelMenu
-              :model="panelMenuItems"
-              :expandedKeys="expandedKeys"
-              @panel-click="onPanelClick"
-              dir="rtl"
-              class="w-full border-none"
-             />
+              <PanelMenu
+                :model="panelMenuItems"
+                :expandedKeys="expandedKeys"
+                @panel-click="onPanelClick"
+                dir="rtl"
+                class="w-full border-none"
+              />
             </div>
             <div>
-             <Button label="خروج" @click="logOutModalIsOpen = true" severity="danger"
-                    icon-pos="right"
-                    class="w-full"
-                    icon="fa fa-arrow-right-from-bracket"/>
+              <Button label="خروج" @click="logOutModalIsOpen = true" severity="danger"
+                      icon-pos="right"
+                      class="w-full"
+                      icon="fa fa-arrow-right-from-bracket" />
             </div>
           </div>
         </div>
       </template>
     </Drawer>
     <main dir="rtl" class="p-4 pb-[68px] lg:p-8">
-      <slot/>
+      <slot />
     </main>
     <div class="inline-block lg:hidden">
       <CurvedBottomNavigation :options="options" v-model="selected"
                               :foregroundColor="foregroundColor"
                               :backgroundColor="isDark?'#262626':'#f8fafc'"
                               :class="isDark?'dark':''"
-                              :replaceRoute="true"/>
+                              :replaceRoute="true" />
     </div>
     <Dialog
       v-model:visible="logOutModalIsOpen"
@@ -98,12 +98,12 @@
                 icon="fa fa-cancel"
                 @click="logOutModalIsOpen = false"
                 icon-pos="right"
-                severity="warn"/>
+                severity="warn" />
         <Button size="small" label="خروج"
                 icon="fa fa-arrow-right-from-bracket"
                 icon-pos="right"
                 @click="logout"
-                severity="danger"/>
+                severity="danger" />
       </div>
 
     </Dialog>
@@ -111,45 +111,48 @@
 </template>
 
 <script setup>
-import { CurvedBottomNavigation } from 'bottom-navigation-vue';
-import 'bottom-navigation-vue/dist/style.css';
-import { computed, ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import ThemeToggle from '@/components/ThemeToggle.vue';
-import { useThemeStore } from '@/stores/theme.js';
-import { storeToRefs } from 'pinia';
-import '@/assets/css/drawer.css';
-import { useOnlineStatusStore } from '@/stores/onlineStatus.js';
-import OnlineToggle from '@/components/OnlineToggle.vue';
-import { useUserStore } from '@/stores/userStore.js';
-import { getRoutesBasedOnUserType } from '@/router/index.js';
+import { CurvedBottomNavigation } from 'bottom-navigation-vue'
+import 'bottom-navigation-vue/dist/style.css'
+import { computed, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import ThemeToggle from '@/components/ThemeToggle.vue'
+import { useThemeStore } from '@/stores/theme.js'
+import { storeToRefs } from 'pinia'
+import '@/assets/css/drawer.css'
+import { useOnlineStatusStore } from '@/stores/onlineStatus.js'
+import OnlineToggle from '@/components/OnlineToggle.vue'
+import { useUserStore } from '@/stores/userStore.js'
+import { getRoutesBasedOnUserType } from '@/router/index.js'
+import { useSettingsStore } from '@/stores/userSettings.js'
 
-const onlineStatusStore = useOnlineStatusStore();
-const userIsOnline = computed(() => onlineStatusStore.userStatus);
+const onlineStatusStore = useOnlineStatusStore()
+const userIsOnline = computed(() => onlineStatusStore.userStatus)
 
-const userStore = useUserStore();
-const user = computed(() => userStore.user);
+const userStore = useUserStore()
+const user = computed(() => userStore.user)
+// don't remove this
+const settingsStore = useSettingsStore()
 
-const visible = ref(false);
-const route = useRoute();
-const router = useRouter();
-const expandedKeys = ref({});
-const selected = ref(3);
-const logOutModalIsOpen = ref(false);
-const availableRoutes = getRoutesBasedOnUserType(userStore?.userType);
-const options = ref(createBottomNavigationOptions(availableRoutes));
+const visible = ref(false)
+const route = useRoute()
+const router = useRouter()
+const expandedKeys = ref({})
+const selected = ref(3)
+const logOutModalIsOpen = ref(false)
+const availableRoutes = getRoutesBasedOnUserType(userStore?.userType)
+const options = ref(createBottomNavigationOptions(availableRoutes))
 
-const themeStore = useThemeStore();
-const { isDark } = storeToRefs(themeStore);
+const themeStore = useThemeStore()
+const { isDark } = storeToRefs(themeStore)
 
 function createBottomNavigationOptions(routes) {
   const filteredRoutes = routes.filter(route =>
-    route?.bottomNavigationPosition,
-  );
+    route?.bottomNavigationPosition
+  )
 
   const sortedRoutes = filteredRoutes.sort((a, b) =>
-    a.bottomNavigationPosition - b.bottomNavigationPosition,
-  );
+    a.bottomNavigationPosition - b.bottomNavigationPosition
+  )
 
   return sortedRoutes.map(route => ({
     id: route.bottomNavigationPosition,
@@ -161,52 +164,52 @@ function createBottomNavigationOptions(routes) {
         id: parseInt(`${route.bottomNavigationPosition}${child.path.length}`),
         icon: child?.icon || 'fa-solid fa-circle',
         title: child?.faName || child.name,
-        path: child.path,
-      })),
-    }),
-  }));
+        path: child.path
+      }))
+    })
+  }))
 }
 
 // ساختار کلیدها برای منوها
 const createMenuKeys = (routes, parentKey = '') => {
   return routes.map((item, index) => {
-    const key = parentKey ? `${parentKey}_${index}` : `${index}`;
+    const key = parentKey ? `${parentKey}_${index}` : `${index}`
     return {
       ...item,
       key,
-      items: item.children ? createMenuKeys(item.children, key) : undefined,
-    };
-  });
-};
+      items: item.children ? createMenuKeys(item.children, key) : undefined
+    }
+  })
+}
 
 const menuItemsWithKeys = computed(() => {
   // مقدار پیش‌فرض زمانی که user وجود ندارد
-  if (!user.value) return [];
+  if (!user.value) return []
 
-  let mainRoutes = availableRoutes.filter(route => route.name && route.faName && route.meta?.requiresAuth);
+  let mainRoutes = availableRoutes.filter(route => route.name && route.faName && route.meta?.requiresAuth)
 
   if (userStore?.userType === 4 && user.value.isAuthenticated === '1') {
-    mainRoutes = mainRoutes.filter(r => r.name !== 'authentication');
+    mainRoutes = mainRoutes.filter(r => r.name !== 'authentication')
   }
 
-  return createMenuKeys(mainRoutes);
-});
+  return createMenuKeys(mainRoutes)
+})
 
 const currentRoute = computed(() => {
   const findRouteRecursive = (routesArray, targetName) => {
     for (const routeItem of routesArray) {
-      if (routeItem.name === targetName) return routeItem;
+      if (routeItem.name === targetName) return routeItem
       if (routeItem.children) {
-        const found = findRouteRecursive(routeItem.children, targetName);
-        if (found) return found;
+        const found = findRouteRecursive(routeItem.children, targetName)
+        if (found) return found
       }
     }
-    return null;
-  };
+    return null
+  }
 
-  const matchedRoute = findRouteRecursive(availableRoutes, route.name);
-  return matchedRoute || '';
-});
+  const matchedRoute = findRouteRecursive(availableRoutes, route.name)
+  return matchedRoute || ''
+})
 
 const panelMenuItems = computed(() => {
   return menuItemsWithKeys.value.map(item => ({
@@ -218,80 +221,80 @@ const panelMenuItems = computed(() => {
       label: child.faName,
       icon: child.icon,
       command: () => {
-        router.push({ name: child.name });
-        visible.value = false;
+        router.push({ name: child.name })
+        visible.value = false
       },
-      class: route.name === child.name ? 'active-submenu-item' : '',
+      class: route.name === child.name ? 'active-submenu-item' : ''
     })),
     class: !item.children && route.name === item.name ? 'active-menu-item' : '',
     command: item.children ? () => toggleMenu(item.key) : () => {
-      router.push({ name: item.name });
-      visible.value = false;
-    },
-  }));
-});
+      router.push({ name: item.name })
+      visible.value = false
+    }
+  }))
+})
 
 const onPanelClick = (event) => {
   if (event.item.items) {
-    toggleMenu(event.item.key);
+    toggleMenu(event.item.key)
   }
-};
+}
 
 const toggleMenu = (key) => {
   expandedKeys.value = {
     ...expandedKeys.value,
-    [key]: !expandedKeys.value[key],
-  };
-};
+    [key]: !expandedKeys.value[key]
+  }
+}
 
 watch([route, menuItemsWithKeys], () => {
-  const newExpandedKeys = {};
+  const newExpandedKeys = {}
 
   const findActivePath = (items, parentKey = '') => {
     for (const [index, item] of items.entries()) {
-      const key = parentKey ? `${parentKey}_${index}` : `${index}`;
+      const key = parentKey ? `${parentKey}_${index}` : `${index}`
 
       if (route.name === item.name) {
         if (parentKey) {
-          newExpandedKeys[parentKey] = true;
+          newExpandedKeys[parentKey] = true
         }
-        return true;
+        return true
       }
 
       if (item.children) {
         if (findActivePath(item.children, key)) {
-          newExpandedKeys[key] = true;
+          newExpandedKeys[key] = true
           if (parentKey) {
-            newExpandedKeys[parentKey] = true;
+            newExpandedKeys[parentKey] = true
           }
-          return true;
+          return true
         }
       }
     }
-    return false;
-  };
+    return false
+  }
 
-  findActivePath(menuItemsWithKeys.value);
-  expandedKeys.value = newExpandedKeys;
-}, { immediate: true });
+  findActivePath(menuItemsWithKeys.value)
+  expandedKeys.value = newExpandedKeys
+}, { immediate: true })
 
 const foregroundColor = computed(() => {
   if (isDark.value) {
     if (!userIsOnline.value) {
-      return '#f87171';
+      return '#f87171'
     }
-    return '#34D399';
+    return '#34D399'
   } else {
     if (!userIsOnline.value) {
-      return '#ef4444';
+      return '#ef4444'
     }
-    return '#10b981';
+    return '#10b981'
   }
-});
+})
 
 const logout = () => {
-  userStore.logout();
-};
+  userStore.logout()
+}
 </script>
 
 <style scoped>

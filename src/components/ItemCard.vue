@@ -44,7 +44,7 @@
         فی
       </div>
       <div class="text-center font-bold" v-format-number="item.fi" />
-      <div class="text-left">ریال</div>
+      <CurrencyType class="text-left" />
     </div>
 
     <div class="grid grid-cols-3 justify-between text-xs mt-2">
@@ -55,7 +55,7 @@
       <div class="text-center font-bold">
         {{ (+item.fi * item.weight).toLocaleString('fa-IR') }}
       </div>
-      <div class="text-left">ریال</div>
+      <CurrencyType class="text-left" />
     </div>
 
     <div class="grid grid-cols-3 justify-between text-xs mt-2" v-if="item.customerMsg">
@@ -307,6 +307,7 @@ import TypeIcon from '@/components/TypeIcon.vue'
 import * as z from 'zod'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
+import CurrencyType from '@/components/CurrencyType.vue'
 
 const dateTime = inject('dateTime')
 const editDialogIsOpen = ref(false)

@@ -102,7 +102,7 @@
       </div>
       <div>
         <span class="text-center" v-format-number="remainedConfirmationData.moneyAccountBalance" />
-        ریال
+        <CurrencyType class="text-left" />
       </div>
       <div class="mt-2 w-full flex justify-end gap-2">
         <Button size="small" label="بعدا بررسی میکنم"
@@ -130,6 +130,7 @@ import CustomerTrade from '@/components/CustomerTrade.vue'
 import moment from 'moment-jalaali'
 import { useSettingsStore } from '@/stores/userSettings.js'
 import { useSelectedItemsStore } from '@/stores/selectedItemsStore.js'
+import CurrencyType from '@/components/CurrencyType.vue'
 
 const repository = inject('repository')
 const dateTime = inject('dateTime')

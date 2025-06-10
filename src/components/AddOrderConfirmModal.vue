@@ -20,7 +20,7 @@
           فی
         </div>
         <div class="text-center" v-format-number="orderPrice" />
-        <div class="text-left">ریال</div>
+        <CurrencyType class="text-left" />
       </div>
       <div class="grid grid-cols-3 justify-between mt-2">
         <template v-if="type ===1">
@@ -46,7 +46,7 @@
           مبلغ کل
         </div>
         <div class="text-center" v-format-number="sum" />
-        <div class="text-left">ریال</div>
+        <CurrencyType class="text-left" />
       </div>
       <div class="grid grid-cols-2 justify-between mt-2">
         <div>
@@ -71,6 +71,7 @@
 <script setup>
 import { computed } from 'vue'
 import TypeIcon from '@/components/TypeIcon.vue'
+import CurrencyType from '@/components/CurrencyType.vue'
 
 const emit = defineEmits(['update:isOpen', 'confirm', 'back'])
 const props = defineProps({
