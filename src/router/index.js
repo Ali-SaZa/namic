@@ -1,38 +1,39 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import LoginView from '@/views/LoginView.vue';
-import ManualDocumentView from '@/views/ManualDocumentView.vue';
-import BalanceReportView from '@/views/BalanceReportView.vue';
-import JournalView from '@/views/JournalView.vue';
-import JournalPrintView from '@/views/JournalPrintView.vue';
-import JournalDeletedView from '@/views/JournalDeletedView.vue';
-import TransactionCountsView from '@/views/TransactionCountsView.vue';
-import AddItemPriceView from '@/views/AddItemPriceView.vue';
-import EditItemPriceView from '@/views/EditItemPriceView.vue';
-import SortItemPriceView from '@/views/SortItemPriceView.vue';
-import UserListView from '@/views/UserListView.vue';
-import AddUserView from '@/views/AddUserView.vue';
-import UserAllView from '@/views/UserAllView.vue';
-import PriceLogView from '@/views/PriceLogView.vue';
-import UsersStatisticView from '@/views/UsersStatisticView.vue';
-import UserPricesUpdateView from '@/views/UserPricesUpdateView.vue';
-import UserAuthenticationView from '@/views/UserAuthenticationView.vue';
-import UserAttachmentView from '@/views/UserAttachmentView.vue';
-import UserTransactionsView from '@/views/UserTransactionsView.vue';
-import CrmView from '@/views/CrmView.vue';
-import SettingView from '@/views/SettingView.vue';
-import TermsManagementView from '@/views/TermsManagementView.vue';
-import DataBaseBackupView from '@/views/DataBaseBackupView.vue';
-import ChangePasswordView from '@/views/ChangePasswordView.vue';
-import PagesView from '@/views/PagesView.vue';
-import UserRequestsView from '@/views/UserRequestsView.vue';
-import CustomerTradeView from '@/views/customerViews/CustomerTradeView.vue';
-import TradeView from '@/views/TradeView.vue';
-import AuthenticationView from '@/views/customerViews/AuthenticationView.vue';
-import FileAttachmentView from '@/views/customerViews/FileAttachmentView.vue';
-import MyRequestsView from '@/views/customerViews/MyRequestsView.vue';
-import TransactionsView from '@/views/customerViews/TransactionsView.vue';
-import CustomerAboutus from '../views/customerViews/CustomerAboutus.vue';
-import TermsView from '../views/TermsView.vue';
+import { createRouter, createWebHistory } from 'vue-router'
+import LoginView from '@/views/LoginView.vue'
+import ManualDocumentView from '@/views/ManualDocumentView.vue'
+import BalanceReportView from '@/views/BalanceReportView.vue'
+import JournalView from '@/views/JournalView.vue'
+import JournalPrintView from '@/views/JournalPrintView.vue'
+import JournalDeletedView from '@/views/JournalDeletedView.vue'
+import TransactionCountsView from '@/views/TransactionCountsView.vue'
+import AddItemPriceView from '@/views/AddItemPriceView.vue'
+import EditItemPriceView from '@/views/EditItemPriceView.vue'
+import SortItemPriceView from '@/views/SortItemPriceView.vue'
+import UserListView from '@/views/UserListView.vue'
+import AddUserView from '@/views/AddUserView.vue'
+import UserAllView from '@/views/UserAllView.vue'
+import PriceLogView from '@/views/PriceLogView.vue'
+import UsersStatisticView from '@/views/UsersStatisticView.vue'
+import UserPricesUpdateView from '@/views/UserPricesUpdateView.vue'
+import UserAuthenticationView from '@/views/UserAuthenticationView.vue'
+import UserAttachmentView from '@/views/UserAttachmentView.vue'
+import UserTransactionsView from '@/views/UserTransactionsView.vue'
+import CrmView from '@/views/CrmView.vue'
+import SettingView from '@/views/SettingView.vue'
+import TermsManagementView from '@/views/TermsManagementView.vue'
+import DataBaseBackupView from '@/views/DataBaseBackupView.vue'
+import ChangePasswordView from '@/views/ChangePasswordView.vue'
+import PagesView from '@/views/PagesView.vue'
+import UserRequestsView from '@/views/UserRequestsView.vue'
+import CustomerTradeView from '@/views/customerViews/CustomerTradeView.vue'
+import TradeView from '@/views/TradeView.vue'
+import AuthenticationView from '@/views/customerViews/AuthenticationView.vue'
+import FileAttachmentView from '@/views/customerViews/FileAttachmentView.vue'
+import MyRequestsView from '@/views/customerViews/MyRequestsView.vue'
+import TransactionsView from '@/views/customerViews/TransactionsView.vue'
+import CustomerAboutus from '../views/customerViews/CustomerAboutus.vue'
+import TermsView from '../views/TermsView.vue'
+import AccountBalance from '../views/customerViews/AccountBalance.vue'
 
 const adminRoutes = [
   {
@@ -44,8 +45,8 @@ const adminRoutes = [
     bottomNavigationPosition: 3,
     meta: {
       requiresAuth: true,
-      layout: 'DefaultLayout',
-    },
+      layout: 'DefaultLayout'
+    }
   },
   {
     path: '/manual-document',
@@ -55,12 +56,12 @@ const adminRoutes = [
     component: ManualDocumentView,
     bottomNavigationPosition: 1,
     props: (route) => ({
-      userId: route.query.userId,
+      userId: route.query.userId
     }),
     meta: {
       requiresAuth: true,
-      layout: 'DefaultLayout',
-    },
+      layout: 'DefaultLayout'
+    }
   },
   {
     path: '/balance-report',
@@ -71,8 +72,8 @@ const adminRoutes = [
     bottomNavigationPosition: 2,
     meta: {
       requiresAuth: true,
-      layout: 'DefaultLayout',
-    },
+      layout: 'DefaultLayout'
+    }
   },
   {
     path: '',
@@ -82,7 +83,7 @@ const adminRoutes = [
     bottomNavigationPosition: 4,
     meta: {
       requiresAuth: true,
-      layout: 'DefaultLayout',
+      layout: 'DefaultLayout'
     },
     children: [
       {
@@ -93,8 +94,8 @@ const adminRoutes = [
         component: JournalView,
         meta: {
           requiresAuth: true,
-          layout: 'DefaultLayout',
-        },
+          layout: 'DefaultLayout'
+        }
       },
       {
         path: '/docs/list/2',
@@ -104,8 +105,8 @@ const adminRoutes = [
         component: JournalPrintView,
         meta: {
           requiresAuth: true,
-          layout: 'DefaultLayout',
-        },
+          layout: 'DefaultLayout'
+        }
       },
       {
         path: '/docs/list/3',
@@ -115,8 +116,8 @@ const adminRoutes = [
         component: JournalDeletedView,
         meta: {
           requiresAuth: true,
-          layout: 'DefaultLayout',
-        },
+          layout: 'DefaultLayout'
+        }
       },
       {
         path: '/requests/customer/count',
@@ -126,10 +127,10 @@ const adminRoutes = [
         component: TransactionCountsView,
         meta: {
           requiresAuth: true,
-          layout: 'DefaultLayout',
-        },
-      },
-    ],
+          layout: 'DefaultLayout'
+        }
+      }
+    ]
   },
   {
     path: '/price',
@@ -138,7 +139,7 @@ const adminRoutes = [
     icon: 'fa-solid fa-sitemap',
     meta: {
       requiresAuth: true,
-      layout: 'DefaultLayout',
+      layout: 'DefaultLayout'
     },
     children: [
       {
@@ -149,8 +150,8 @@ const adminRoutes = [
         component: AddItemPriceView,
         meta: {
           requiresAuth: true,
-          layout: 'DefaultLayout',
-        },
+          layout: 'DefaultLayout'
+        }
       },
       {
         path: '/edit',
@@ -160,8 +161,8 @@ const adminRoutes = [
         component: EditItemPriceView,
         meta: {
           requiresAuth: true,
-          layout: 'DefaultLayout',
-        },
+          layout: 'DefaultLayout'
+        }
       },
       {
         path: '/sort',
@@ -171,10 +172,10 @@ const adminRoutes = [
         component: SortItemPriceView,
         meta: {
           requiresAuth: true,
-          layout: 'DefaultLayout',
-        },
-      },
-    ],
+          layout: 'DefaultLayout'
+        }
+      }
+    ]
   },
   {
     path: '',
@@ -183,7 +184,7 @@ const adminRoutes = [
     icon: 'fa-solid fa-users-gear',
     meta: {
       requiresAuth: true,
-      layout: 'DefaultLayout',
+      layout: 'DefaultLayout'
     },
     children: [
       {
@@ -194,8 +195,8 @@ const adminRoutes = [
         component: UserListView,
         meta: {
           requiresAuth: true,
-          layout: 'DefaultLayout',
-        },
+          layout: 'DefaultLayout'
+        }
       },
       {
         path: '/registration/signup',
@@ -205,8 +206,8 @@ const adminRoutes = [
         component: AddUserView,
         meta: {
           requiresAuth: true,
-          layout: 'DefaultLayout',
-        },
+          layout: 'DefaultLayout'
+        }
       },
       {
         path: '/users/all',
@@ -216,8 +217,8 @@ const adminRoutes = [
         component: UserAllView,
         meta: {
           requiresAuth: true,
-          layout: 'DefaultLayout',
-        },
+          layout: 'DefaultLayout'
+        }
       },
       {
         path: '/price/logView',
@@ -227,8 +228,8 @@ const adminRoutes = [
         component: PriceLogView,
         meta: {
           requiresAuth: true,
-          layout: 'DefaultLayout',
-        },
+          layout: 'DefaultLayout'
+        }
       },
       {
         path: '/users/statistic',
@@ -238,8 +239,8 @@ const adminRoutes = [
         component: UsersStatisticView,
         meta: {
           requiresAuth: true,
-          layout: 'DefaultLayout',
-        },
+          layout: 'DefaultLayout'
+        }
       },
       {
         path: '/userPrices/updateByGroup',
@@ -249,8 +250,8 @@ const adminRoutes = [
         component: UserPricesUpdateView,
         meta: {
           requiresAuth: true,
-          layout: 'DefaultLayout',
-        },
+          layout: 'DefaultLayout'
+        }
       },
       {
         path: '/users/authentication',
@@ -260,10 +261,10 @@ const adminRoutes = [
         component: UserAuthenticationView,
         meta: {
           requiresAuth: true,
-          layout: 'DefaultLayout',
-        },
-      },
-    ],
+          layout: 'DefaultLayout'
+        }
+      }
+    ]
   },
   {
     path: '/user/file/attachment',
@@ -273,8 +274,8 @@ const adminRoutes = [
     component: UserAttachmentView,
     meta: {
       requiresAuth: true,
-      layout: 'DefaultLayout',
-    },
+      layout: 'DefaultLayout'
+    }
   },
   {
     path: '/user/havale',
@@ -284,8 +285,8 @@ const adminRoutes = [
     component: UserTransactionsView,
     meta: {
       requiresAuth: true,
-      layout: 'DefaultLayout',
-    },
+      layout: 'DefaultLayout'
+    }
   },
   {
     path: '/crm',
@@ -295,8 +296,8 @@ const adminRoutes = [
     component: CrmView,
     meta: {
       requiresAuth: true,
-      layout: 'DefaultLayout',
-    },
+      layout: 'DefaultLayout'
+    }
   },
   {
     path: '/settings',
@@ -306,8 +307,8 @@ const adminRoutes = [
     component: SettingView,
     meta: {
       requiresAuth: true,
-      layout: 'DefaultLayout',
-    },
+      layout: 'DefaultLayout'
+    }
   },
   {
     path: '/database/backup',
@@ -317,8 +318,8 @@ const adminRoutes = [
     component: DataBaseBackupView,
     meta: {
       requiresAuth: true,
-      layout: 'DefaultLayout',
-    },
+      layout: 'DefaultLayout'
+    }
   },
   {
     path: '/registration/changePassword',
@@ -328,8 +329,8 @@ const adminRoutes = [
     component: ChangePasswordView,
     meta: {
       requiresAuth: true,
-      layout: 'DefaultLayout',
-    },
+      layout: 'DefaultLayout'
+    }
   },
   {
     path: '/terms/management',
@@ -339,8 +340,8 @@ const adminRoutes = [
     component: TermsManagementView,
     meta: {
       requiresAuth: true,
-      layout: 'DefaultLayout',
-    },
+      layout: 'DefaultLayout'
+    }
   },
   {
     path: '/pages',
@@ -351,8 +352,8 @@ const adminRoutes = [
     bottomNavigationPosition: 5,
     meta: {
       requiresAuth: true,
-      layout: 'DefaultLayout',
-    },
+      layout: 'DefaultLayout'
+    }
   },
   //TODO : remove from side nav
   {
@@ -363,10 +364,10 @@ const adminRoutes = [
     component: UserRequestsView,
     meta: {
       requiresAuth: true,
-      layout: 'DefaultLayout',
-    },
-  },
-];
+      layout: 'DefaultLayout'
+    }
+  }
+]
 
 const customerRoutes = [
   {
@@ -378,8 +379,8 @@ const customerRoutes = [
     bottomNavigationPosition: 3,
     meta: {
       requiresAuth: true,
-      layout: 'DefaultLayout',
-    },
+      layout: 'DefaultLayout'
+    }
   },
   {
     path: '/requests/customer/list',
@@ -390,8 +391,8 @@ const customerRoutes = [
     bottomNavigationPosition: 2,
     meta: {
       requiresAuth: true,
-      layout: 'DefaultLayout',
-    },
+      layout: 'DefaultLayout'
+    }
   },
   {
     path: '/authentication',
@@ -401,8 +402,8 @@ const customerRoutes = [
     component: AuthenticationView,
     meta: {
       requiresAuth: true,
-      layout: 'DefaultLayout',
-    },
+      layout: 'DefaultLayout'
+    }
   },
   {
     path: '/user/file/attachment',
@@ -413,8 +414,8 @@ const customerRoutes = [
     bottomNavigationPosition: 4,
     meta: {
       requiresAuth: true,
-      layout: 'DefaultLayout',
-    },
+      layout: 'DefaultLayout'
+    }
   },
   {
     path: '/user/havale',
@@ -425,8 +426,8 @@ const customerRoutes = [
     bottomNavigationPosition: 1,
     meta: {
       requiresAuth: true,
-      layout: 'DefaultLayout',
-    },
+      layout: 'DefaultLayout'
+    }
   },
   {
     path: '/aboutus',
@@ -436,8 +437,19 @@ const customerRoutes = [
     component: CustomerAboutus,
     meta: {
       requiresAuth: true,
-      layout: 'DefaultLayout',
-    },
+      layout: 'DefaultLayout'
+    }
+  },
+  {
+    path: '/balance/accountBalance',
+    name: 'balance-accountBalance',
+    faName: 'مانده حساب',
+    icon: 'fa-solid fa-wallet',
+    component: AccountBalance,
+    meta: {
+      requiresAuth: true,
+      layout: 'DefaultLayout'
+    }
   },
   {
     path: '/pages',
@@ -448,65 +460,65 @@ const customerRoutes = [
     bottomNavigationPosition: 5,
     meta: {
       requiresAuth: true,
-      layout: 'DefaultLayout',
-    },
-  },
-];
+      layout: 'DefaultLayout'
+    }
+  }
+]
 
 export const getRoutesBasedOnUserType = (userType) => {
   const baseRoutes = [
     {
       path: '',
       redirect: () => {
-        const isAuthenticated = localStorage.getItem('token');
+        const isAuthenticated = localStorage.getItem('token')
         if (userType === 4) {
-          return isAuthenticated ? '/customer-trade' : '/registration/login';
+          return isAuthenticated ? '/customer-trade' : '/registration/login'
         }
-        return isAuthenticated ? '/trade' : '/registration/login';
-      },
+        return isAuthenticated ? '/trade' : '/registration/login'
+      }
     },
     {
       path: '/registration/login',
       name: 'login',
       component: LoginView,
-      meta: { layout: 'EmptyLayout' },
+      meta: { layout: 'EmptyLayout' }
     },
     {
       path: '/login',
-      redirect: '/registration/login',
+      redirect: '/registration/login'
     },
     {
       path: '/terms',
       name: 'terms',
       component: TermsView,
-      meta: { layout: 'EmptyLayout' },
-    },
-  ];
+      meta: { layout: 'EmptyLayout' }
+    }
+  ]
 
   if (userType === 1) { // Admin
-    return [...baseRoutes, ...adminRoutes];
+    return [...baseRoutes, ...adminRoutes]
   } else if (userType === 4) { // Customer
-    return [...baseRoutes, ...customerRoutes];
+    return [...baseRoutes, ...customerRoutes]
   }
 
-  return baseRoutes; // Default case
-};
+  return baseRoutes // Default case
+}
 
-const initialUserType = localStorage.getItem('type') || 1;
+const initialUserType = localStorage.getItem('type') || 1
 const router = createRouter({
   history: createWebHistory(),
-  routes: getRoutesBasedOnUserType(+initialUserType),
-});
+  routes: getRoutesBasedOnUserType(+initialUserType)
+})
 
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = localStorage.getItem('token') && localStorage.getItem('id');
+  const isAuthenticated = localStorage.getItem('token') && localStorage.getItem('id')
   if (to.meta.requiresAuth && !isAuthenticated) {
-    next('/registration/login');
+    next('/registration/login')
   } else if (to.path === '/manual-document' && !to.query.userId && from.query.userId) {
-    next({ path: to.path, query: { userId: from.query.userId } });
+    next({ path: to.path, query: { userId: from.query.userId } })
   } else {
-    next();
+    next()
   }
-});
+})
 
-export default router;
+export default router

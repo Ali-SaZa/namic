@@ -398,6 +398,14 @@ class ApiRepository {
   dataBackup(data={}){
     return this.http.post('database/backup.php', data)
   }
+
+  getRemained(data={}){
+    return this.http.post('remained/getAll.php', data)
+  }
+
+  getAccountTurnover(data={}){
+    return this.http.post('accountTurnover/getPDF.php', data)
+  }
 }
 
 const repository = new ApiRepository();
