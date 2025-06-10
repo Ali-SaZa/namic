@@ -53,8 +53,12 @@
     <Drawer v-model:visible="visible" position="right">
       <template #container="{ closeCallback }">
         <div class="flex flex-col h-full">
-          <div class="flex items-center justify-end px-6 pt-4 shrink-0">
+          <div class="flex items-center justify-between px-6 pt-4 shrink-0">
             <Button type="button" @click="closeCallback" icon="pi pi-times" rounded outlined />
+            <div class="hidden lg:flex items-center gap-2">
+              <img src="../../public/favicon.ico" class="w-12 h-12" alt="logo">
+              <span class="font-bold text-gray-600">{{ appName }}</span>
+            </div>
           </div>
           <div class="overflow-y-auto p-4 panelmenu-wrapper min-h-[93dvh] flex flex-col justify-between gap-2">
             <div>
