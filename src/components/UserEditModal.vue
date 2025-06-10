@@ -10,7 +10,7 @@
     <form @submit.prevent="handleFormSubmit" class="rounded-lg shadow bg-gray-50 p-4">
       <label class="block text-sm font-medium mb-1 text-right">نام و نام خانوادگی</label>
       <IconField>
-        <InputIcon class="fa fa-pen"/>
+        <InputIcon class="fa fa-pen" />
         <InputText
           v-model="name"
           :class="{ 'p-invalid': errors.name }"
@@ -25,7 +25,7 @@
 
       <label class="block text-sm font-medium mb-1 text-right mt-2">نام کاربری</label>
       <IconField>
-        <InputIcon class="fa fa-pen"/>
+        <InputIcon class="fa fa-pen" />
         <InputText
           :defaultValue="userData.userName"
           disabled=""
@@ -36,7 +36,7 @@
 
       <label class="block text-sm font-medium mb-1 text-right mt-2">موبایل</label>
       <IconField>
-        <InputIcon class="fa fa-mobile"/>
+        <InputIcon class="fa fa-mobile" />
         <InputText
           v-model="mobile"
           placeholder="09121234567"
@@ -52,7 +52,7 @@
 
       <label class="block text-sm font-medium mb-1 text-right mt-2">کدملی</label>
       <IconField>
-        <InputIcon class="fa fa-hashtag"/>
+        <InputIcon class="fa fa-hashtag" />
         <InputText
           v-model="nationalCode"
           :invalid="errors.nationalCode"
@@ -68,7 +68,7 @@
         }}</small>
       <label class="block text-sm font-medium mb-1 text-right mt-2">تعداد دستگاه‌های همزمان</label>
       <IconField>
-        <InputIcon class="fa fa-users"/>
+        <InputIcon class="fa fa-users" />
         <InputNumber
           v-model="sessionCount"
           :invalid="errors.sessionCount"
@@ -84,9 +84,9 @@
 
       <div class="flex items-center justify-between mt-2">
         <Button size="small" outlined label="ایجاد مجوز ورود به سیستم" icon="fa fa-key" icon-pos="left"
-                @click="addNewSession"/>
+                @click="addNewSession" />
         <Button size="small" severity="warn" outlined label="حذف تمامی دستگاه‌ها" icon="fa fa-trash" icon-pos="left"
-                @click="removeAllSession"/>
+                @click="removeAllSession" />
       </div>
 
       <label class="block text-sm font-medium mt-4 text-right">گروه حساب</label>
@@ -99,13 +99,13 @@
         >
           <template #value="slotProps">
             <div v-if="slotProps.value" class="flex items-center">
-              <i :class="slotProps.value.icon"/>
+              <i :class="slotProps.value.icon" />
               <div class="mr-1">{{ slotProps.value.name }}</div>
             </div>
           </template>
           <template #option="slotProps">
             <div class="flex items-center w-full" dir="rtl">
-              <i :class="slotProps.option.icon"/>
+              <i :class="slotProps.option.icon" />
               <div class="mr-1">{{ slotProps.option.name }}</div>
             </div>
           </template>
@@ -127,18 +127,18 @@
       </Select>
       <div class="flex items-center justify-between mt-2">
         <label class="block text-sm font-medium text-right">مجوز معامله</label>
-        <ToggleSwitch v-model="allowTrade" class="min-w-10"/>
+        <ToggleSwitch v-model="allowTrade" class="min-w-10" />
       </div>
       <div class="flex items-center justify-between mt-2">
         <label class="block text-sm font-medium text-right">مجوز نمایش مانده و ریز حساب</label>
-        <ToggleSwitch v-model="allowRemained" class="min-w-10"/>
+        <ToggleSwitch v-model="allowRemained" class="min-w-10" />
       </div>
     </form>
 
     <div class="border border-blue-500 rounded-lg p-2 my-2">
       <label class="block text-sm font-medium mb-1 text-right mt-2">کد حسابداری تمامی آیتم‌ها</label>
       <IconField>
-        <InputIcon class="fa fa-id-card"/>
+        <InputIcon class="fa fa-id-card" />
         <InputNumber
           v-model="accountId"
           class="w-full"
@@ -146,15 +146,15 @@
         />
       </IconField>
       <div class="mt-2 flex justify-end">
-        <Button size="small" outlined label="ثبت و ذخیره" icon="fa fa-save" icon-pos="right" @click="saveAccountId"/>
+        <Button size="small" outlined label="ثبت و ذخیره" icon="fa fa-save" icon-pos="right" @click="saveAccountId" />
       </div>
     </div>
 
     <div class="flex gap-2 mt-2 items-center justify-end">
       <Button size="small" severity="warn" label="بستن" @click="cancel" icon-pos="right"
-              icon="fa fa-cancel"/>
+              icon="fa fa-cancel" />
       <Button size="small" severity="info" label="تایید و ثبت نهایی" @click="confirm"
-              icon-pos="right" icon="fa fa-check-circle"/>
+              icon-pos="right" icon="fa fa-check-circle" />
     </div>
   </Dialog>
   <GroupManagementModal
@@ -165,38 +165,38 @@
 </template>
 
 <script setup>
-import { computed, inject, onMounted, ref, watch } from 'vue';
-import * as z from 'zod';
-import { useForm } from 'vee-validate';
-import { toTypedSchema } from '@vee-validate/zod';
-import GroupManagementModal from '@/components/GroupManagementModal.vue';
-import { useAdminSettingsStore } from '@/stores/adminSettings.js';
-import { useToast } from 'primevue/usetoast';
+import { computed, inject, ref, watch } from 'vue'
+import * as z from 'zod'
+import { useForm } from 'vee-validate'
+import { toTypedSchema } from '@vee-validate/zod'
+import GroupManagementModal from '@/components/GroupManagementModal.vue'
+import { useAdminSettingsStore } from '@/stores/adminSettings.js'
+import { useToast } from 'primevue/usetoast'
 
-const groupManagementDialogIsOpen = ref(false);
-const adminSettings = useAdminSettingsStore();
-const repository = inject('repository');
-const toast = useToast();
+const groupManagementDialogIsOpen = ref(false)
+const adminSettings = useAdminSettingsStore()
+const repository = inject('repository')
+const toast = useToast()
 
-const emit = defineEmits(['update:isOpen', 'confirm', 'back', 'submit', 'getAccountGroups']);
+const emit = defineEmits(['update:isOpen', 'confirm', 'back', 'submit', 'getAccountGroups'])
 const props = defineProps({
   isOpen: {
     type: Boolean,
-    default: false,
+    default: false
   },
   header: {
     type: String,
-    default: '',
+    default: ''
   },
   userData: {
     type: Object,
-    required: true,
+    required: true
   },
   accountGroup: {
     type: Array,
-    default: () => [],
-  },
-});
+    default: () => []
+  }
+})
 
 const schema = z.object({
   name: z.string({ required_error: 'نام کاربر الزامی است' }).
@@ -207,29 +207,29 @@ const schema = z.object({
     min(11, { message: 'شماره موبایل باید ۱۱ رقمی باشد' }).
     regex(/^09[0-9]{9}$/, { message: 'شماره موبایل معتبر نیست (فرمت صحیح: 09123456789)' }),
 
-  nationalCode: z.string({ required_error: 'کد ملی الزامی است' }).min(1, { message: 'کد ملی الزامی است' }),
+  nationalCode: z.string({ required_error: 'کد ملی الزامی است' }).min(10, { message: 'کد ملی الزامی است' }),
 
   sessionCount: z.number({ invalid_type_error: 'تعداد دستگاه‌های همزمان الزامی است' }).
-    min(1, { message: 'تعداد بیشتر از صفر باشد' }).max(9, { message: 'تعداد نمی‌تواند بیشتر از ۱۰۰ باشد' }),
-  userGroupId: z.number().optional(),
-  orderKind: z.number().optional(),
-});
+    min(1, { message: 'تعداد بیشتر از صفر باشد' }).max(9, { message: 'تعداد نمی‌تواند بیشتر از ۹ باشد' }),
+  userGroupId: z.any().nullable().optional(),
+  orderKind: z.number().optional()
+})
 
 // ابتدا فرم را با مقادیر خالی ایجاد کنید
 const { errors, handleSubmit, defineField, resetForm } = useForm({
-  validationSchema: toTypedSchema(schema),
-});
+  validationSchema: toTypedSchema(schema)
+})
 
-const [name] = defineField('name');
-const [mobile] = defineField('mobile');
-const [nationalCode] = defineField('nationalCode');
-const [sessionCount] = defineField('sessionCount');
-const [userGroupId] = defineField('userGroupId');
+const [name] = defineField('name')
+const [mobile] = defineField('mobile')
+const [nationalCode] = defineField('nationalCode')
+const [sessionCount] = defineField('sessionCount')
+const [userGroupId] = defineField('userGroupId')
 
-const orderKind = ref(null);
-const allowTrade = ref(false);
-const allowRemained = ref(false);
-const accountId = ref(null);
+const orderKind = ref(null)
+const allowTrade = ref(false)
+const allowRemained = ref(false)
+const accountId = ref(null)
 
 // هنگام تغییر props.userData، فرم را مجددا تنظیم کنید
 watch(() => props.userData, (newVal) => {
@@ -240,51 +240,63 @@ watch(() => props.userData, (newVal) => {
         mobile: newVal.mobile || '',
         nationalCode: newVal.nationalCode || '',
         sessionCount: newVal.sessionCount || 1,
-        userGroupId: null,
-      },
-    });
-    orderKind.value = newVal.orderKind || adminSettings.orderKinds[0]?.id;
-    allowTrade.value = newVal.allowTrade === 1 || false;
-    allowRemained.value = newVal.allowRemained === 1 || false;
+        userGroupId: null
+      }
+    })
+    orderKind.value = newVal.orderKind || adminSettings.orderKinds[0]?.id
+    allowTrade.value = newVal.allowTrade === 1 || false
+    allowRemained.value = newVal.allowRemained === 1 || false
   }
-}, { immediate: true, deep: true });
+}, { immediate: true, deep: true })
 
 watch(() => props.accountGroup, (newVal) => {
   if (newVal) {
     if (props.userData.userGroupId && props.accountGroup.length) {
-      const selectedGroup = props.accountGroup.find(g => g.id == props.userData.userGroupId);
+      const selectedGroup = props.accountGroup.find(g => g.id == props.userData.userGroupId)
       if (selectedGroup) {
         resetForm({
           values: {
-            userGroupId: selectedGroup,
-          },
-        });
+            userGroupId: selectedGroup
+          }
+        })
       }
     }
   }
-});
+})
 
 const handleFormSubmit = handleSubmit((values) => {
-  emit('submit', values);
-});
+  // emit('submit', values)
+  console.log('values:',values)
+}, (errors) => {
+  const errorMessages = Object.entries(errors.errors)
+  errorMessages.forEach((message) => {
+    toast.add({
+      severity: 'error',
+      summary: 'خطا',
+      life: 3000,
+      detail: message[1]
+    })
+  })
+
+})
 
 const localVisible = computed({
   get: () => props.isOpen,
-  set: (val) => emit('update:isOpen', val),
-});
+  set: (val) => emit('update:isOpen', val)
+})
 
 const confirm = () => {
-  handleFormSubmit();
-};
+  handleFormSubmit()
+}
 
 const cancel = () => {
-  localVisible.value = false;
-};
+  localVisible.value = false
+}
 
 const getAccountGroups = async () => {
-  emit('getAccountGroups');
-  groupManagementDialogIsOpen.value = false;
-};
+  emit('getAccountGroups')
+  groupManagementDialogIsOpen.value = false
+}
 
 const removeAllSession = () => {
   repository.deleteToken({ userId: props.userData.id }).then((response) => {
@@ -293,18 +305,18 @@ const removeAllSession = () => {
         severity: 'success',
         summary: 'موفقیت',
         life: 3000,
-        detail: response.data.msg,
-      });
+        detail: response.data.msg
+      })
     } else {
       toast.add({
         severity: 'error',
         summary: 'خطا',
         life: 3000,
-        detail: response.data.msg,
-      });
+        detail: response.data.msg
+      })
     }
-  });
-};
+  })
+}
 
 const addNewSession = () => {
   repository.addLoginLog({ userName: props.userData.userName }).then((response) => {
@@ -313,18 +325,18 @@ const addNewSession = () => {
         severity: 'success',
         summary: 'موفقیت',
         life: 3000,
-        detail: response.data.msg,
-      });
+        detail: response.data.msg
+      })
     } else {
       toast.add({
         severity: 'error',
         summary: 'خطا',
         life: 3000,
-        detail: response.data.msg,
-      });
+        detail: response.data.msg
+      })
     }
-  });
-};
+  })
+}
 
 const saveAccountId = () => {
   if (accountId.value === null) {
@@ -332,9 +344,9 @@ const saveAccountId = () => {
       severity: 'error',
       summary: 'خطا',
       life: 3000,
-      detail: 'کد حسابداری را وارد کنید',
-    });
-    return;
+      detail: 'کد حسابداری را وارد کنید'
+    })
+    return
   }
   repository.setAllItemsAccountId({ accountId: accountId.value, userId: props.userData.id }).then((response) => {
     if (response.data.state) {
@@ -342,16 +354,16 @@ const saveAccountId = () => {
         severity: 'success',
         summary: 'موفقیت',
         life: 3000,
-        detail: response.data.msg,
-      });
+        detail: response.data.msg
+      })
     } else {
       toast.add({
         severity: 'error',
         summary: 'خطا',
         life: 3000,
-        detail: response.data.msg,
-      });
+        detail: response.data.msg
+      })
     }
-  });
-};
+  })
+}
 </script>

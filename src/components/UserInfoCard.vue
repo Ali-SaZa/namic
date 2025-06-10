@@ -294,4 +294,5 @@ watch(isActive, (oldValue) => {
 const getAccountGroups = () => {
   emit('getAccountGroups');
 };
+
 </script>

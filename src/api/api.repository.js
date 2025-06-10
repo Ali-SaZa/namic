@@ -406,6 +406,11 @@ class ApiRepository {
   getAccountTurnover(data={}){
     return this.http.post('accountTurnover/getPDF.php', data)
   }
+
+
+  updateUser(data={}){
+    return this.http.post('users/update.php', data)
+  }
 }
 
 const repository = new ApiRepository();
