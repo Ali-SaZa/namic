@@ -34,6 +34,10 @@
           <i :class="currentRoute.icon" />
         </div>
       </div>
+      <a href="/" class="hidden lg:flex items-center gap-2">
+        <img src="../../public/favicon.ico" class="w-12 h-12" alt="logo">
+        <span class="font-bold text-gray-600">{{ appName }}</span>
+      </a>
       <div class="hidden lg:flex items-center">
         <div
           class="bg-gray-200 border-r-2 text-gray-700 border-gray-900 p-2 rounded flex items-center gap-2 mr-4">
@@ -132,7 +136,7 @@ const userStore = useUserStore()
 const user = computed(() => userStore.user)
 // don't remove this
 const settingsStore = useSettingsStore()
-
+const appName = import.meta.env.VITE_APP_NAME
 const visible = ref(false)
 const route = useRoute()
 const router = useRouter()

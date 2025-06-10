@@ -48,7 +48,7 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg,json,vue,txt,woff2}'],
       },
       devOptions: {
-        enabled: true, // فعال در حالت توسعه
+        enabled: true,
       },
     }),
   ],
