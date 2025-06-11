@@ -131,7 +131,6 @@ const requestDateSummary = async () => {
     if (response) {
       dayFilters.value = response.data.summary
       diff.value = dayFilters.value[0].diff
-      console.log(dayFilters.value)
     }
   } catch (error) {
     console.log(error, 'error on fetch requestDateSummary')
@@ -185,7 +184,6 @@ const deleteItem = (id) => {
 }
 
 const editItem = (item) => {
-  console.log('item:', item)
   let data = {
     requestId: item.id,
     registrarId: userStore.id,

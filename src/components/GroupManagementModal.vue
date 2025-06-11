@@ -190,7 +190,6 @@ const editGroup = async () => {
 };
 
 onMounted(() => {
-  console.log('sss',props.parentAccountGroups.length)
   if (props.parentAccountGroups.length > 0) {
     localAccountGroups.value = [...props.parentAccountGroups];
   } else {

@@ -85,21 +85,19 @@
 <script setup>
 import { inject } from 'vue'
 import { useUserStore } from '@/stores/userStore.js'
-import {useAdminSettingsStore} from '@/stores/adminSettings'
-
+import { useAdminSettingsStore } from '@/stores/adminSettings'
 
 const dateTime = inject('dateTime')
 const repository = inject('repository')
 const userStore = useUserStore()
 const adminSettingsStore = useAdminSettingsStore()
 
-
 const props = defineProps({
   data: {
     type: Array,
     required: true,
-    default: () => [],
-  },
+    default: () => []
+  }
 })
 
 const getStatus = (state) => {
@@ -107,35 +105,33 @@ const getStatus = (state) => {
     if (state === 3) {
       return {
         title: 'تایید',
-        class: 'text-green-500',
+        class: 'text-green-500'
       }
     } else if (state === 2) {
       return {
         title: 'رد',
-        class: 'text-red-500',
+        class: 'text-red-500'
       }
     } else if (state === 4) {
       return {
         title: 'دستی',
-        class: 'text-blue-500',
+        class: 'text-blue-500'
       }
     } else {
       return {
         title: 'نامشخص',
-        class: '',
+        class: ''
       }
     }
   }
 }
 
 const isSeenChanged = async (val, data) => {
-  console.log(val, data, 'status')
-
   try {
-    const response = await repository.updateIsSeen({
+    await repository.updateIsSeen({
       userType: userStore.type,
       reqId: data.id,
-      isSeen: val === true ? 1 : 0,
+      isSeen: val === true ? 1 : 0
     })
   } catch (error) {
     console.log(error, 'Error on change isSeen')

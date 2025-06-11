@@ -206,7 +206,6 @@ const removeItem = (id) => {
 
 const openDetail = (id) => {
   selectedPrice.value = localUserPricesData.value.find(item => item.id === id);
-  console.log('selectedPrice:', selectedPrice.value);
 
   resetForm({
     values: {

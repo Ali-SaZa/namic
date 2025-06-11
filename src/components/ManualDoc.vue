@@ -202,7 +202,6 @@ const selectUser = (user) => {
 
 const selectItem = (item) => {
   selectedItem.value = item;
-  console.log('selectedItem.value:', selectedItem.value);
   userPricesLoading.value = true;
   step.value = 3;
 };
@@ -234,8 +233,6 @@ const openOrderModal = (isBuy) => {
 };
 
 const confirmOrder = () => {
-  console.log('buyItem');
-
   const data = {
     userId: selectedUser.value.id,
     userName: selectedUser.value.name,
@@ -263,7 +260,6 @@ const confirmOrder = () => {
   }
 
   repository.addOrder(data).then((response) => {
-    console.log('response', response);
     lastStepOrderModalState.value = response.data.state;
     if (response.data.state) {
       orderId.value = response.data.id;
@@ -295,7 +291,6 @@ const orderValue = computed(() => {
 });
 
 const submitOrder = (value) => {
-  console.log('value', value);
   order.value = value;
   orderModalIsOpen.value = false;
   confirmOrderModalIsOpen.value = true;

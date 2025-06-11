@@ -63,7 +63,6 @@ const getPriceLogView = async () => {
     });
     if (response) {
       logViews.value = response.data.log;
-      console.log(logViews.value);
     }
   } catch (error) {
     console.log(error, 'Error on getPriceLogView');

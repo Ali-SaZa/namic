@@ -267,7 +267,6 @@ const deleteItem = (id) => {
 }
 
 const editItem = (item) => {
-  console.log('item:', item)
   let data = {
     requestId: item.id,
     registrarId: user.value.id,

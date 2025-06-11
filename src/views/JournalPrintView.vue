@@ -127,7 +127,6 @@ const updateIsPrinted = () => {
         requestLastId: reportList.value[reportList.value.length - 1].id
       }).
       then((response) => {
-        console.log('response:', response)
         if (response.data.state) {
           toast.add({
             severity: 'success',

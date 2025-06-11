@@ -145,7 +145,6 @@ const filteredFileAttachments = computed(() => {
 const getAttachmentsGroupList = () => {
   loading.value = true;
   repository.getAttachmentsGroupList().then((response) => {
-    console.log('response', response);
     fileAttachments.value = response.data.attachments;
   }).catch((error) => {
     toast.add({
@@ -169,7 +168,6 @@ const selectUser = (attachment) => {
 const getAttachments = (filters) => {
   loading.value = true;
   repository.getAttachmentsList(filters).then((response) => {
-    console.log('response', response);
     step.value = 2;
     selectedAttachment.value.attachments = response.data.attachments;
   }).catch((error) => {

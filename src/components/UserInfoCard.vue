@@ -266,7 +266,6 @@ const editUserItems = () => {
   repository.getUsersInfo({ id: props.id }).then((response) => {
     console.log('response', response)
     if (response.data.state) {
-      console.log('response.data.price:', response.data.price)
       userPricesData.value = response.data.prices.map(item => ({
         ...item,
         isActive: item.isActive === 1,

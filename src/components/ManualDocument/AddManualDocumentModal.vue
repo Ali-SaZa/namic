@@ -197,7 +197,6 @@ const localVisible = computed({
 })
 
 const handleFormSubmit = handleSubmit((values) => {
-  console.log('values:', values)
   emit('submit', {
     ...values,
     type: props.type
@@ -242,7 +241,6 @@ const handleAmountInput = (value) => {
 }
 
 const resetOrderForm = () => {
-  console.log('resetOrderForm: in co')
   resetForm({
     values: {
       price: props.itemPrice || 0,

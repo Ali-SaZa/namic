@@ -123,8 +123,6 @@ const getUsersStatistics = async () => {
       activeUsers.value = response.data.usersStatistics.filter((user) => user.successCount >= 2)
       inActiveUsers.value = response.data.usersStatistics.filter((user) => user.successCount < 2)
     }
-    console.log(activeUsers.value, 'active')
-    console.log(inActiveUsers.value, 'inactive')
   } catch (error) {
     console.log(error, 'Error on getUsersStatistics')
   } finally {

@@ -3,12 +3,10 @@ const CACHE_VERSION = 'v1';
 const CACHE_NAME = `gold-admin-cache-${CACHE_VERSION}`;
 
 self.addEventListener('install', (event) => {
-  console.log('Service Worker installing');
   self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
-  console.log('Service Worker activating');
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(

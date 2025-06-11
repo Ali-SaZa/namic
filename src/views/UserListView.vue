@@ -158,7 +158,6 @@ const getAccountGroups = async () => {
     const response = await repository.getUserGroupList()
     if (response.data.state) {
       accountGroup.value = response.data.userGroup
-      console.log(accountGroup.value)
     } else {
       toast.add({
         severity: 'error',

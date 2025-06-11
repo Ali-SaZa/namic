@@ -130,7 +130,6 @@ function onFileSelect(event, fileNumber) {
 
 const getAuthenticationStatus = () => {
   repository.getAuthenticationStatus({ userId: userStore.id }).then((response) => {
-    console.log(response)
     if (response.data.state) {
       message.value = response.data.msg
     }

@@ -133,7 +133,6 @@ const filteredTransactions = computed(() => {
 const getTransactionsGroupList = () => {
   loading.value = true
   repository.getTransactionsGroupList({ uName: user.value.userName }).then((response) => {
-    console.log('response', response)
     transactions.value = response.data.havale
   }).catch((error) => {
     toast.add({
@@ -156,10 +155,8 @@ const selectUser = (attachment) => {
 }
 
 const getTransactionsList = (filters) => {
-  console.log('filters:', filters)
   loading.value = true
   repository.getTransactionsList(filters).then((response) => {
-    console.log('response', response)
     step.value = 2
     selectedTransaction.value.transactions = response.data.havale
   }).catch((error) => {

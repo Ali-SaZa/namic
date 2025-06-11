@@ -223,7 +223,6 @@ const handleLogin = async (values) => {
     requestLoginWithMobile(values)
   } else {
     userStore.verifyLoginCode(values.otp, values.password).then((response) => {
-      console.log('response:', response)
       if (response.data.state) {
         toast.add({
           severity: 'success',

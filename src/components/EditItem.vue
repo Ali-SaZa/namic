@@ -487,7 +487,6 @@ const validateForm = async () => {
 
     if (relatedChecked.value) {
       if (relatedItems.value.length) {
-        console.log('disagreementRelatedItems', disagreementRelatedItems.value)
         if (!selectedRelatedItems.value) {
           selectedRelatedItemError.value = 'انتخاب آیتم مرتبط الزامی است'
         }
@@ -534,8 +533,6 @@ watch(disagreementRelatedItems, () => {
 const handleEditItem = async (values) => {
   isLoading.value = true
   try {
-    console.log(values)
-
     const response = await repository.updatePrice(values)
     if (response) {
       toast.add({
