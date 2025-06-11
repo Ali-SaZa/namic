@@ -10,11 +10,11 @@
     <div class="w-full mt-2">
       <div class="flex items-center justify-between">
         <div class="font-bold">
-          <UserRoleIcon :type="role"/>
+          <UserRoleIcon :type="role" />
           {{ firstName }}
         </div>
         <div class="flex items-center justify-between">
-          <ToggleSwitch v-model="isActive"/>
+          <ToggleSwitch v-model="isActive" />
         </div>
       </div>
       <div class="flex items-center justify-between">
@@ -33,7 +33,7 @@
             aria-label="Star"
             :disabled="loading"
           />
-          <Menu ref="menu" id="overlay_menu" :model="items" :popup="true"/>
+          <Menu ref="menu" id="overlay_menu" :model="items" :popup="true" />
         </div>
       </div>
     </div>
@@ -68,26 +68,27 @@
     <UserEditModal v-model:isOpen="editModalIsOpen" :header="editHeader" :userData="userData"
                    :userPricesData="userPricesData"
                    :accountGroup="accountGroup"
-                   @getAccountGroups="getAccountGroups"/>
+                   @userUpdated="userUpdated"
+                   @getAccountGroups="getAccountGroups" />
     <UserEditItemModal v-model:isOpen="editItemsModalIsOpen"
                        :userPricesData="userPricesData"
                        :userId="id"
-                       :header="editHeader"/>
+                       :header="editHeader" />
   </div>
 </template>
 
 <script setup>
-import defaultAvatar from '@/assets/images/avatar.png';
+import defaultAvatar from '@/assets/images/avatar.png'
 import { computed, inject, ref, watch } from 'vue'
-import { useToast } from 'primevue/usetoast';
-import { useRouter } from 'vue-router';
-import UserRoleIcon from './UserRoleIcon.vue';
-import { useUserStore } from '@/stores/userStore.js';
-import UserEditModal from '@/components/UserEditModal.vue';
-import UserEditItemModal from '@/components/UserEditItemModal.vue';
+import { useToast } from 'primevue/usetoast'
+import { useRouter } from 'vue-router'
+import UserRoleIcon from './UserRoleIcon.vue'
+import { useUserStore } from '@/stores/userStore.js'
+import UserEditModal from '@/components/UserEditModal.vue'
+import UserEditItemModal from '@/components/UserEditItemModal.vue'
 
-const router = useRouter();
-const toast = useToast();
+const router = useRouter()
+const toast = useToast()
 
 const props = defineProps({
   id: Number,
@@ -100,59 +101,59 @@ const props = defineProps({
   accountIds: String,
   accountGroup: Array,
   hasPDF: Boolean
-});
+})
 
-const emit = defineEmits(['deleteUser', 'getAccountGroups']);
-const smsUrl = import.meta.env.VITE_SMS_URL;
-const menu = ref();
-const userStore = useUserStore();
-const isActive = ref(props.isActive === 1);
-const messageDialogIsOpen = ref(false);
-const repository = inject('repository');
-const editModalIsOpen = ref(false);
-const editItemsModalIsOpen = ref(false);
-const loading = ref(false);
-const editHeader = ref('');
+const emit = defineEmits(['deleteUser', 'getAccountGroups','userUpdated'])
+const smsUrl = import.meta.env.VITE_SMS_URL
+const menu = ref()
+const userStore = useUserStore()
+const isActive = ref(props.isActive === 1)
+const messageDialogIsOpen = ref(false)
+const repository = inject('repository')
+const editModalIsOpen = ref(false)
+const editItemsModalIsOpen = ref(false)
+const loading = ref(false)
+const editHeader = ref('')
 const messageText = ref(
-  `برای ورود به سایت namic به لینک زیر مراجعه کنید\nhttps://www.namic-network.com`,
-);
-const userData = ref({});
-const userPricesData = ref({});
+  `برای ورود به سایت namic به لینک زیر مراجعه کنید\nhttps://www.namic-network.com`
+)
+const userData = ref({})
+const userPricesData = ref({})
 
 const items = computed(() => {
   const baseItems = [
     { label: 'ویرایش', icon: 'fa-solid fa-edit', command: () => editUser() },
     {
       label: 'ویرایش آیتم‌ها', icon: 'fa-solid fa-bars',
-      command: () => editUserItems(),
+      command: () => editUserItems()
     },
     {
       label: 'پیام',
       icon: 'fa-solid fa-comments',
-      command: () => (messageDialogIsOpen.value = true),
+      command: () => (messageDialogIsOpen.value = true)
     },
     {
       label: 'آیتم‌ها', icon: 'fa-solid fa-bars',
       command: () => router.replace({
         path: '/manual-document',
-        query: { userId: props.id },
-      }),
+        query: { userId: props.id }
+      })
     }
-  ];
+  ]
 
   if (props.hasPDF) {
     baseItems.push({
       label: 'فاکتور‌ها',
       icon: 'fa-solid fa-file-pdf',
-      command: () => router.push(`/balance/accountBalance/${props.id}`),
-    });
+      command: () => router.push(`/balance/accountBalance/${props.id}`)
+    })
   }
 
   baseItems.push(
     {
       label: 'اسناد',
       icon: 'fa-solid fa-file-invoice',
-      command: () => router.push(`/requests/customer/${props.id}`),
+      command: () => router.push(`/requests/customer/${props.id}`)
     },
     {
       label: 'حذف',
@@ -160,47 +161,47 @@ const items = computed(() => {
       command: () =>
         emit('deleteUser', {
           id: props.id,
-          name: props.firstName,
-        }),
+          name: props.firstName
+        })
     }
-  );
+  )
 
-  return baseItems;
-});
+  return baseItems
+})
 
 const userRole = (lastName, role) => {
   const roles = {
     1: 'مدیر سیستم',
     2: 'اپراتور',
     3: 'حسابدار',
-    4: 'مشتری',
-  };
+    4: 'مشتری'
+  }
 
-  return `${lastName} ( ${roles[role] || 'نقش نامشخص'} )`;
-};
+  return `${lastName} ( ${roles[role] || 'نقش نامشخص'} )`
+}
 
 const toggleMenu = (event) => {
-  menu.value.toggle(event);
-};
+  menu.value.toggle(event)
+}
 
 const changeUserStatus = async (status) => {
   try {
     const response = await repository.updateUserStatus({
       id: props.id,
-      isActive: status ? 1 : 0,
-    });
+      isActive: status ? 1 : 0
+    })
     if (response) {
       toast.add({
         severity: 'success',
         summary: 'وضعیت تغییر کرد',
         life: 3000,
-        detail: `کاربر ${props.firstName} با موفقیت ${status ? 'فعال' : 'غیرفعال'} شد`,
-      });
+        detail: `کاربر ${props.firstName} با موفقیت ${status ? 'فعال' : 'غیرفعال'} شد`
+      })
     }
   } catch (error) {
-    console.log(error, 'error on change user status');
+    console.log(error, 'error on change user status')
   }
-};
+}
 
 const sendSms = async () => {
   try {
@@ -212,87 +213,92 @@ const sendSms = async () => {
         mobile: props.phoneNumber,
         customerId: props.id,
         SMS_URL: smsUrl,
-        userToken: userStore.token,
-      });
+        userToken: userStore.token
+      })
       if (response) {
         toast.add({
           severity: 'success',
           summary: 'موفقیت',
           life: 3000,
-          detail: 'پیام با موفقیت ارسال شد',
-        });
+          detail: 'پیام با موفقیت ارسال شد'
+        })
       }
     } else {
       toast.add({
         severity: 'warn',
         summary: 'خطا',
         life: 3000,
-        detail: 'شماره موبایل کاربر یافت نشد',
-      });
+        detail: 'شماره موبایل کاربر یافت نشد'
+      })
     }
   } catch (error) {
-    console.log(error, 'Error on send sms');
+    console.log(error, 'Error on send sms')
   } finally {
-    messageDialogIsOpen.value = false;
+    messageDialogIsOpen.value = false
   }
-};
+}
 
 const editUser = () => {
-  loading.value = true;
-  editHeader.value = 'ویرایش کاربر ' + props.userName;
+  loading.value = true
+  editHeader.value = 'ویرایش کاربر ' + props.userName
   repository.getUsersInfo({ id: props.id }).then((response) => {
     if (response.data.state) {
-      userData.value = response.data.user;
-      userData.value.accountIds = props.accountIds;
-      userPricesData.value = response.data.prices;
-      editModalIsOpen.value = true;
+      userData.value = response.data.user
+      userData.value.accountIds = props.accountIds
+      userPricesData.value = response.data.prices
+      editModalIsOpen.value = true
     } else {
       toast.add({
         severity: 'error',
         summary: 'خطا',
         life: 3000,
-        detail: response.data.msg,
-      });
+        detail: response.data.msg
+      })
     }
   }).finally(() => {
-    loading.value = false;
-  });
-};
+    loading.value = false
+  })
+}
 
 const editUserItems = () => {
-  loading.value = true;
-  editHeader.value = 'ویرایش آیتم‌های کاربر ' + props.userName;
+  loading.value = true
+  editHeader.value = 'ویرایش آیتم‌های کاربر ' + props.userName
   repository.getUsersInfo({ id: props.id }).then((response) => {
-    console.log('response', response);
+    console.log('response', response)
     if (response.data.state) {
-      console.log('response.data.price:', response.data.price);
+      console.log('response.data.price:', response.data.price)
       userPricesData.value = response.data.prices.map(item => ({
         ...item,
         isActive: item.isActive === 1,
         allowBuy: item.allowBuy === 1,
         allowSell: item.allowSell === 1,
-        isOpen: false,
-      }));
-      editItemsModalIsOpen.value = true;
+        isOpen: false
+      }))
+      editItemsModalIsOpen.value = true
     } else {
       toast.add({
         severity: 'error',
         summary: 'خطا',
         life: 3000,
-        detail: response.data.msg,
-      });
+        detail: response.data.msg
+      })
     }
   }).finally(() => {
-    loading.value = false;
-  });
-};
+    loading.value = false
+  })
+}
 
 watch(isActive, (oldValue) => {
-  changeUserStatus(oldValue);
-});
+  changeUserStatus(oldValue)
+})
 
 const getAccountGroups = () => {
-  emit('getAccountGroups');
-};
+  emit('getAccountGroups')
+}
+
+const userUpdated = () => {
+  editModalIsOpen.value = false
+  emit('userUpdated')
+}
 
 </script>

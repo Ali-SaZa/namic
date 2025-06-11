@@ -1,13 +1,13 @@
 <template>
   <Dialog
     v-model:visible="localVisible"
-    modal
+    :breakpoints="{ '1199px': '45vw', '575px': '90vw' }"
     :header="header"
     :style="{ width: '30rem', height:'70vh' }"
     dir="rtl"
-    :breakpoints="{ '1199px': '45vw', '575px': '90vw' }"
+    modal
   >
-    <form @submit.prevent="handleFormSubmit" class="rounded-lg shadow bg-gray-50 p-4">
+    <form class="rounded-lg shadow bg-gray-50 p-4" @submit.prevent="handleFormSubmit">
       <label class="block text-sm font-medium mb-1 text-right">نام و نام خانوادگی</label>
       <IconField>
         <InputIcon class="fa fa-pen" />
@@ -28,8 +28,8 @@
         <InputIcon class="fa fa-pen" />
         <InputText
           :defaultValue="userData.userName"
-          disabled=""
           class="w-full"
+          disabled=""
           type="text"
         />
       </IconField>
@@ -39,10 +39,10 @@
         <InputIcon class="fa fa-mobile" />
         <InputText
           v-model="mobile"
-          placeholder="09121234567"
-          type="text"
           :class="{'p-invalid': errors.mobile}"
           class="w-full pl-10"
+          placeholder="09121234567"
+          type="text"
         />
       </IconField>
       <small v-if="errors.mobile" class="text-red-500 text-right block mt-1">{{
@@ -56,9 +56,9 @@
         <InputText
           v-model="nationalCode"
           :invalid="errors.nationalCode"
+          :useGrouping="false"
           class="w-full"
           inputId="withoutgrouping"
-          :useGrouping="false"
           placeholder="کدملی"
           type="text"
         />
@@ -72,10 +72,10 @@
         <InputNumber
           v-model="sessionCount"
           :invalid="errors.sessionCount"
+          :max="9"
+          :min="0"
           class="w-full"
           inputId="integeronly"
-          :min="0"
-          :max="9"
         />
       </IconField>
       <small v-if="errors.sessionCount" class="text-red-500 text-right block mt-1">{{
@@ -83,19 +83,30 @@
         }}</small>
 
       <div class="flex items-center justify-between mt-2">
-        <Button size="small" outlined label="ایجاد مجوز ورود به سیستم" icon="fa fa-key" icon-pos="left"
+        <Button icon="fa fa-key" icon-pos="left" label="ایجاد مجوز ورود به سیستم" outlined size="small"
                 @click="addNewSession" />
-        <Button size="small" severity="warn" outlined label="حذف تمامی دستگاه‌ها" icon="fa fa-trash" icon-pos="left"
+        <Button icon="fa fa-trash" icon-pos="left" label="حذف تمامی دستگاه‌ها" outlined severity="warn" size="small"
                 @click="removeAllSession" />
       </div>
+
+      <label class="block text-sm font-medium mb-1 text-right mt-2">توضیحات</label>
+      <IconField>
+        <InputIcon class="fa fa-info" />
+        <InputText
+          v-model="info"
+          class="w-full"
+          placeholder="توضیحات"
+          type="text"
+        />
+      </IconField>
 
       <label class="block text-sm font-medium mt-4 text-right">گروه حساب</label>
       <div class="flex justify-between w-full">
         <Select
           v-model="userGroupId"
           :options="accountGroup"
-          optionLabel="name"
           class="w-full"
+          optionLabel="name"
         >
           <template #value="slotProps">
             <div v-if="slotProps.value" class="flex items-center">
@@ -111,10 +122,10 @@
           </template>
         </Select>
         <Button
-          @click="groupManagementDialogIsOpen = true"
+          class="min-w-10 mr-2"
           icon="fa-solid fa-plus"
           severity="success"
-          class="min-w-10 mr-2"
+          @click="groupManagementDialogIsOpen = true"
         />
       </div>
       <label class="block text-sm font-medium mt-2 text-right">نوع درخواست مشتری</label>
@@ -146,21 +157,21 @@
         />
       </IconField>
       <div class="mt-2 flex justify-end">
-        <Button size="small" outlined label="ثبت و ذخیره" icon="fa fa-save" icon-pos="right" @click="saveAccountId" />
+        <Button icon="fa fa-save" icon-pos="right" label="ثبت و ذخیره" outlined size="small" @click="saveAccountId" />
       </div>
     </div>
 
     <div class="flex gap-2 mt-2 items-center justify-end">
-      <Button size="small" severity="warn" label="بستن" @click="cancel" icon-pos="right"
-              icon="fa fa-cancel" />
-      <Button size="small" severity="info" label="تایید و ثبت نهایی" @click="confirm"
-              icon-pos="right" icon="fa fa-check-circle" />
+      <Button icon="fa fa-cancel" icon-pos="right" label="بستن" severity="warn" size="small"
+              @click="cancel" />
+      <Button icon="fa fa-check-circle" icon-pos="right" label="تایید و ثبت نهایی" severity="info"
+              size="small" @click="handleFormSubmit" />
     </div>
   </Dialog>
   <GroupManagementModal
     v-model:isOpen="groupManagementDialogIsOpen"
-    @refresh="getAccountGroups"
     :parentAccountGroups="accountGroup"
+    @refresh="getAccountGroups"
   />
 </template>
 
@@ -172,13 +183,14 @@ import { toTypedSchema } from '@vee-validate/zod'
 import GroupManagementModal from '@/components/GroupManagementModal.vue'
 import { useAdminSettingsStore } from '@/stores/adminSettings.js'
 import { useToast } from 'primevue/usetoast'
+import { useUserStore } from '@/stores/userStore.js'
 
 const groupManagementDialogIsOpen = ref(false)
 const adminSettings = useAdminSettingsStore()
 const repository = inject('repository')
 const toast = useToast()
 
-const emit = defineEmits(['update:isOpen', 'confirm', 'back', 'submit', 'getAccountGroups'])
+const emit = defineEmits(['update:isOpen', 'back', 'submit', 'getAccountGroups', 'userUpdated'])
 const props = defineProps({
   isOpen: {
     type: Boolean,
@@ -212,7 +224,8 @@ const schema = z.object({
   sessionCount: z.number({ invalid_type_error: 'تعداد دستگاه‌های همزمان الزامی است' }).
     min(1, { message: 'تعداد بیشتر از صفر باشد' }).max(9, { message: 'تعداد نمی‌تواند بیشتر از ۹ باشد' }),
   userGroupId: z.any().nullable().optional(),
-  orderKind: z.number().optional()
+  orderKind: z.number().optional(),
+  info: z.string().optional()
 })
 
 // ابتدا فرم را با مقادیر خالی ایجاد کنید
@@ -222,42 +235,40 @@ const { errors, handleSubmit, defineField, resetForm } = useForm({
 
 const [name] = defineField('name')
 const [mobile] = defineField('mobile')
+const [orderKind] = defineField('orderKind')
 const [nationalCode] = defineField('nationalCode')
 const [sessionCount] = defineField('sessionCount')
 const [userGroupId] = defineField('userGroupId')
+const [info] = defineField('info')
 
-const orderKind = ref(null)
 const allowTrade = ref(false)
 const allowRemained = ref(false)
 const accountId = ref(null)
 
-// هنگام تغییر props.userData، فرم را مجددا تنظیم کنید
+const userStore = useUserStore()
+const user = computed(() => userStore.user)
+
 watch(() => props.userData, (newVal) => {
   if (newVal) {
-    console.log('newVal:', newVal)
     resetForm({
       values: {
         name: newVal.name || '',
         mobile: newVal.mobile || '',
         nationalCode: newVal.nationalCode || '',
         sessionCount: newVal.sessionCount || 1,
-        userGroupId: null
+        info: newVal.info || 1,
+        userGroupId: newVal.userGroupId || null,
+        orderKind: newVal.orderKind || adminSettings.orderKinds[0]?.id
       }
     })
-    orderKind.value = newVal.orderKind || adminSettings.orderKinds[0]?.id
     allowTrade.value = newVal.allowTrade === 1 || false
     allowRemained.value = newVal.allowRemained === 1 || false
 
     if (Object.prototype.hasOwnProperty.call(newVal, 'accountIds')) {
       accountId.value = newVal.accountIds.length ? newVal.accountIds.slice(1, -1) : null
-      console.log('accountId.value:', accountId.value)
     }
-  }
-}, { immediate: true, deep: true })
 
-watch(() => props.accountGroup, (newVal) => {
-  if (newVal) {
-    if (props.userData.userGroupId && props.accountGroup.length) {
+    if (newVal.userGroupId && props.accountGroup.length) {
       const selectedGroup = props.accountGroup.find(g => g.id == props.userData.userGroupId)
       if (selectedGroup) {
         resetForm({
@@ -268,11 +279,44 @@ watch(() => props.accountGroup, (newVal) => {
       }
     }
   }
-})
+}, { immediate: true, deep: true })
 
 const handleFormSubmit = handleSubmit((values) => {
-  // emit('submit', values)
   console.log('values:', values)
+  const data = {
+    id: props.userData.id,
+    name: values.name,
+    mobile: values.mobile,
+    nationalCode: values.nationalCode,
+    allowTrade: allowTrade.value ? 1 : 0,
+    allowRemained: allowRemained.value ? 1 : 0,
+    sessionCount: values.sessionCount,
+    info: values.info,
+    newUserPrices: [],
+    removedUserPrices: [],
+    userGroupId: values.userGroupId ? values.userGroupId.id : '',
+    adminPasswordStr: 'acf7ef943fdeb3cbfed8dd0d8f584731',//TODO: change this value in future
+    orderKind: values.orderKind,
+    uName: user.value.userName
+  }
+  repository.updateUser(data).then((response) => {
+    if (response.data.state) {
+      toast.add({
+        severity: 'success',
+        summary: 'موفقیت',
+        life: 3000,
+        detail: response.data.msg
+      })
+      emit('userUpdated')
+    } else {
+      toast.add({
+        severity: 'error',
+        summary: 'خطا',
+        life: 3000,
+        detail: response.data.msg
+      })
+    }
+  })
 }, (errors) => {
   const errorMessages = Object.entries(errors.errors)
   errorMessages.forEach((message) => {
@@ -283,17 +327,12 @@ const handleFormSubmit = handleSubmit((values) => {
       detail: message[1]
     })
   })
-
 })
 
 const localVisible = computed({
   get: () => props.isOpen,
   set: (val) => emit('update:isOpen', val)
 })
-
-const confirm = () => {
-  handleFormSubmit()
-}
 
 const cancel = () => {
   localVisible.value = false

@@ -14,8 +14,8 @@
           <TypeIcon :type="item.type"/>
           {{ item.name }}
         </div>
-        <div class="col-span-3 md:col-span-2 flex items-center gap-2">
-          <ToggleSwitch v-model="item.isActive" class="min-w-[50px]"/>
+        <div class="col-span-3 md:col-span-2 flex items-center gap-2 min-w-[85px]">
+          <ToggleSwitch v-model="item.isActive" class="min-w-[40px]"/>
           <Button icon="fa fa-trash" size="small" outlined severity="danger" @click="removeItem(item.id)"/>
         </div>
       </div>
@@ -30,7 +30,7 @@
             <ToggleSwitch v-model="item.allowSell"/>
           </div>
         </div>
-        <div class="col-span-2 md:col-span-1 pr-6 md:pr-2">
+        <div class="col-span-2 md:col-span-1 pr-4.5 md:pr-1.5">
           <Button size="small" severity="info" outlined icon="fa fa-caret-down" @click="openDetail(item.id)"/>
         </div>
       </div>

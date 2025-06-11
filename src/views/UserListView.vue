@@ -23,6 +23,7 @@
       :accountGroup="accountGroup"
       @deleteUser="askForDeleteUser"
       @getAccountGroups="getAccountGroups"
+      @userUpdated="fetchUsers"
     />
   </div>
   <template v-else>
