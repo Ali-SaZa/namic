@@ -234,6 +234,7 @@ const accountId = ref(null)
 // هنگام تغییر props.userData، فرم را مجددا تنظیم کنید
 watch(() => props.userData, (newVal) => {
   if (newVal) {
+    console.log('newVal:', newVal)
     resetForm({
       values: {
         name: newVal.name || '',
@@ -246,6 +247,11 @@ watch(() => props.userData, (newVal) => {
     orderKind.value = newVal.orderKind || adminSettings.orderKinds[0]?.id
     allowTrade.value = newVal.allowTrade === 1 || false
     allowRemained.value = newVal.allowRemained === 1 || false
+
+    if (Object.prototype.hasOwnProperty.call(newVal, 'accountIds')) {
+      accountId.value = newVal.accountIds.length ? newVal.accountIds.slice(1, -1) : null
+      console.log('accountId.value:', accountId.value)
+    }
   }
 }, { immediate: true, deep: true })
 
@@ -266,7 +272,7 @@ watch(() => props.accountGroup, (newVal) => {
 
 const handleFormSubmit = handleSubmit((values) => {
   // emit('submit', values)
-  console.log('values:',values)
+  console.log('values:', values)
 }, (errors) => {
   const errorMessages = Object.entries(errors.errors)
   errorMessages.forEach((message) => {

@@ -88,7 +88,6 @@ import UserEditItemModal from '@/components/UserEditItemModal.vue';
 
 const router = useRouter();
 const toast = useToast();
-const localAccountGroup = ref([])
 
 const props = defineProps({
   id: Number,
@@ -98,6 +97,7 @@ const props = defineProps({
   userName: String,
   isActive: Boolean,
   phoneNumber: String,
+  accountIds: String,
   accountGroup: Array,
   hasPDF: Boolean
 });
@@ -243,6 +243,7 @@ const editUser = () => {
   repository.getUsersInfo({ id: props.id }).then((response) => {
     if (response.data.state) {
       userData.value = response.data.user;
+      userData.value.accountIds = props.accountIds;
       userPricesData.value = response.data.prices;
       editModalIsOpen.value = true;
     } else {

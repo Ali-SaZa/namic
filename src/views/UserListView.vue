@@ -16,6 +16,7 @@
       :firstName="user.name"
       :isActive="user.isActive"
       :phoneNumber="user.mobile"
+      :accountIds="user.accountIds"
       :role="user.type"
       :userName="user.userName"
       :hasPDF="user.hasPDF === 1"
