@@ -112,7 +112,6 @@ const deleteUser = async () => {
     })
 
     if (response) {
-      await fetchUsers()
       closeModal()
       toast.add({
         severity: 'success',
@@ -120,6 +119,8 @@ const deleteUser = async () => {
         life: 3000,
         detail: `کاربر ${deleteUserFirstname.value} با موفقیت حذف شد`
       })
+      allUsersData.value = []
+      await fetchUsers()
     }
   } catch (error) {
     console.log(error, 'error on delete user')

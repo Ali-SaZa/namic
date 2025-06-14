@@ -3,7 +3,7 @@
     <label class="block text-sm font-medium text-right">ابتدا رمز عبور ادمین را وارد کنید</label>
 
     <form @submit="onSubmit">
-      <IconField iconPosition="right">
+      <IconField iconPosition="right" dir="ltr">
         <InputIcon class="pi pi-lock" />
         <Password
           v-model="password"
@@ -32,7 +32,6 @@
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
-import md5 from 'md5';
 
 const emit = defineEmits(['submit'])
 
