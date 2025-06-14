@@ -196,8 +196,7 @@ const baseSchema = z.object({
     required_error: 'شماره موبایل الزامی است'
   }).
     min(1, { message: 'شماره موبایل الزامی است' }).
-    min(11, { message: 'شماره موبایل باید ۱۱ رقمی باشد' }).
-    regex(/^09[0-9]{9}$/, { message: 'شماره موبایل معتبر نیست (فرمت صحیح: 09123456789)' }),
+    min(11, { message: 'شماره موبایل باید ۱۱ رقمی باشد' }),
 
   nationalCode: z.string({
     invalid_type_error: 'کد ملی الزامی است'
@@ -268,7 +267,7 @@ const handleAddUser = async (values) => {
         detail: 'کاربر با موفقیت اضافه شد'
       })
       resetForm()
-    }else{
+    } else {
       toast.add({
         severity: 'error',
         summary: 'خطا',
@@ -306,6 +305,8 @@ const onSubmit = handleSubmit(async () => {
     }
     await handleAddUser(values)
   }
+}, (errors) => {
+  console.log('errors:', errors)
 })
 
 const submitAdminPassword = (password) => {
