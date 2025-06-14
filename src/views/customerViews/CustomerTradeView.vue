@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full flex justify-center relative">
+  <div class="w-full flex justify-center relative min-h-[75dvh]">
     <div class="w-full md:w-[80%] lg:w-[50%]">
       <div class="grid grid-cols-2 justify-between items-center">
         <div class="col-span-2 md:col-span-1">
