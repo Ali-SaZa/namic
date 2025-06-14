@@ -370,7 +370,7 @@ const adminRoutes = [
   {
     path: '/balance/accountBalance/:id',
     name: 'balance-accountBalance',
-    faName: 'فاکتورهای‌ کاربر',
+    faName: 'مانده حساب‌ کاربر',
     icon: 'fa-solid fa-wallet',
     component: AccountBalance,
     meta: {

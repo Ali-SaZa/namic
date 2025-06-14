@@ -103,7 +103,7 @@ const props = defineProps({
   hasPDF: Boolean
 })
 
-const emit = defineEmits(['deleteUser', 'getAccountGroups','userUpdated'])
+const emit = defineEmits(['deleteUser', 'getAccountGroups', 'userUpdated'])
 const smsUrl = import.meta.env.VITE_SMS_URL
 const menu = ref()
 const userStore = useUserStore()
@@ -143,8 +143,8 @@ const items = computed(() => {
 
   if (props.hasPDF) {
     baseItems.push({
-      label: 'فاکتور‌ها',
-      icon: 'fa-solid fa-file-pdf',
+      label: 'مانده حساب',
+      icon: 'fa-solid fa-wallet',
       command: () => router.push(`/balance/accountBalance/${props.id}`)
     })
   }
