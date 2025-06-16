@@ -212,7 +212,7 @@ const getPrices = (firstTime = true) => {
     lastUpdateDay.value = dateTime.getJalaliDay(moment(response.data.lastUpdateTime))
     if (firstTime) {
       loading.value = false
-      if (selectedItems.value.length === 0) {
+      if (selectedItems.value.length === 0 && prices.value.length > 0) {
         selectedItems.value = prices.value.slice(0, 4).map((r) => r.id)
       }
     }
@@ -249,6 +249,7 @@ const getAdminMessage = () => {
 }
 
 const getRemainedConfirmation = () => {
+  console.log('userStore.id:', userStore.id)
   repository.remainedConfirmation({ userId: userStore.id }).then((response) => {
     if (Object.prototype.hasOwnProperty.call(response.data, 'info')) {
       remainedConfirmationData.value.geramAccountBalance = response.data.info.geramAccountBalance
