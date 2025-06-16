@@ -441,10 +441,10 @@ const noAnswerData = ref(
     userType: userStore.userType,
     state: 0,
     sellerMsg: '',
-    registrarId: user.value.id,
-    registrarType: user.value.type,
-    registrarName: user.value.name,
-    uName: user.value.userName
+    registrarId: user.value?.id,
+    registrarType: user.value?.type,
+    registrarName: user.value?.name,
+    uName: user.value?.userName
   }
 )
 
