@@ -157,6 +157,7 @@ import GroupManagementModal from '@/components/GroupManagementModal.vue'
 import { useAdminSettingsStore } from '@/stores/adminSettings'
 import PasswordBox from '@/components/PasswordBox.vue'
 import { useUserStore } from '@/stores/userStore.js'
+import { toTypedSchema } from '@vee-validate/zod'
 
 const toast = useToast()
 const repository = inject('repository')
@@ -186,7 +187,6 @@ const getAccountGroups = async () => {
   }
 }
 
-// تعریف schema پایه
 const baseSchema = z.object({
   name: z.string({ required_error: 'نام کاربر الزامی است' }).
     min(3, { message: 'نام کاربر باید حداقل ۳ حرف باشد' }).
@@ -207,53 +207,26 @@ const baseSchema = z.object({
     max(50, { message: 'نام کاربری نمی‌تواند بیشتر از ۵۰ حرف باشد' }),
 
   password: z.string({ required_error: 'رمزعبور الزامی است' }).
-    min(6, { message: 'رمزعبور باید حداقل ۶ کاراکتر باشد' }).
-    regex(/[A-Z]/, { message: 'رمزعبور باید حداقل یک حرف بزرگ داشته باشد' }).
-    regex(/[0-9]/, { message: 'رمزعبور باید حداقل یک عدد داشته باشد' })
+    min(4, { message: 'رمزعبور باید حداقل ۴ کاراکتر باشد' })
 })
 
 const { handleSubmit, errors, defineField, resetForm, setErrors } = useForm({
   initialValues: {
     name: '',
-    mobile: null,
+    mobile: '',
     nationalCode: null,
     userName: '',
     password: ''
-  }
+  },
+  validateOnChange: true,
+  validationSchema: toTypedSchema(baseSchema)
 })
 
-// تعریف فیلدها
 const [name] = defineField('name')
 const [mobile] = defineField('mobile')
 const [nationalCode] = defineField('nationalCode')
 const [userName] = defineField('userName')
 const [password] = defineField('password')
-
-// تابع اعتبارسنجی سفارشی
-const validateForm = async () => {
-  try {
-    const values = {
-      name: name.value,
-      mobile: mobile.value,
-      nationalCode: nationalCode.value,
-      userName: userName.value,
-      password: password.value
-    }
-
-    await baseSchema.parseAsync(values)
-
-    return true
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      const formattedErrors = {}
-      error.errors.forEach((err) => {
-        formattedErrors[err.path[0]] = err.message
-      })
-      setErrors(formattedErrors)
-    }
-    return false
-  }
-}
 
 const handleAddUser = async (values) => {
   isLoading.value = true
@@ -288,23 +261,20 @@ const handleAddUser = async (values) => {
   }
 }
 
-const onSubmit = handleSubmit(async () => {
-  const isValid = await validateForm()
-  if (isValid) {
-    const values = {
-      name: name.value,
-      mobile: mobile.value,
-      nationalCode: nationalCode.value,
-      userName: userName.value,
-      password: password.value,
-      type: selectedAccountType.value.id,
-      groupId: selectedAccountGroup.value.id,
-      allowTrade: true,
-      isActive: true,
-      sessionCount: 3
-    }
-    await handleAddUser(values)
+const onSubmit = handleSubmit(async (values) => {
+  const prepareValues = {
+    name: values.name,
+    mobile: values.mobile,
+    nationalCode: values.nationalCode,
+    userName: values.userName,
+    password: values.password,
+    type: selectedAccountType.value.id,
+    groupId: selectedAccountGroup.value.id,
+    allowTrade: true,
+    isActive: true,
+    sessionCount: 3
   }
+  await handleAddUser(prepareValues)
 }, (errors) => {
   console.log('errors:', errors)
 })
