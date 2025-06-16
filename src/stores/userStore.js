@@ -102,6 +102,7 @@ export const useUserStore = defineStore('user', () => {
         user.value = response.data.user
         prices.value = response.data.prices || []
         permissions.value = response.data.permissions || []
+        localStorage.setItem('type', response.data.user.type.toString())
         return response.data
       }
       throw new Error(response.data.msg || 'خطا در دریافت اطلاعات کاربر')

@@ -110,6 +110,7 @@ import { useDeviceStore } from '@/stores/deviceStore.js'
 import moment from 'moment-jalaali'
 import { useThemeStore } from '@/stores/theme.js'
 import { storeToRefs } from 'pinia'
+import { updateRouterRoutes } from '@/router/index.js'
 
 const version = import.meta.env.VITE_VERSION
 
@@ -222,7 +223,7 @@ const handleLogin = async (values) => {
   if (step.value === 1) {
     requestLoginWithMobile(values)
   } else {
-    userStore.verifyLoginCode(values.otp, values.password).then((response) => {
+    userStore.verifyLoginCode(values.otp, values.password).then(async (response) => {
       if (response.data.state) {
         toast.add({
           severity: 'success',
@@ -230,10 +231,13 @@ const handleLogin = async (values) => {
           life: 3000,
           detail: 'عملیات ورود با موفقیت انجام شد.'
         })
+        await userStore.fetchUserInfo()
+        updateRouterRoutes(userType.value)
+
         if (userType.value === 1) {
-          router.push('/trade')
+          await router.push('/trade')
         } else {
-          router.push('/customer-trade')
+          await router.push('/customer-trade')
         }
       } else {
         toast.add({

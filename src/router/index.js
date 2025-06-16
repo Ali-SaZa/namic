@@ -477,16 +477,21 @@ const customerRoutes = [
   }
 ]
 
-export const getRoutesBasedOnUserType = (userType) => {
+export const getRoutesBasedOnUserType = (userType = null) => {
   const baseRoutes = [
     {
       path: '',
       redirect: () => {
-        const isAuthenticated = localStorage.getItem('token')
-        if (userType === 4) {
-          return isAuthenticated ? '/customer-trade' : '/registration/login'
+        const isAuthenticated = localStorage.getItem('token') && localStorage.getItem('id')
+        const currentUserType = +localStorage.getItem('type') || null
+
+        if (!isAuthenticated || !currentUserType) {
+          return '/registration/login'
         }
-        return isAuthenticated ? '/trade' : '/registration/login'
+        if (currentUserType === 4) {
+          return '/customer-trade'
+        }
+        return '/trade'
       }
     },
     {
@@ -507,6 +512,10 @@ export const getRoutesBasedOnUserType = (userType) => {
     }
   ]
 
+  if (!userType) {
+    return baseRoutes
+  }
+
   if (userType === 1) { // Admin
     return [...baseRoutes, ...adminRoutes]
   } else if (userType === 4) { // Customer
@@ -516,21 +525,49 @@ export const getRoutesBasedOnUserType = (userType) => {
   return baseRoutes // Default case
 }
 
-const initialUserType = localStorage.getItem('type') || 1
 const router = createRouter({
   history: createWebHistory(),
-  routes: getRoutesBasedOnUserType(+initialUserType)
+  routes: []
 })
+
+export function updateRouterRoutes(userType) {
+  const routes = getRoutesBasedOnUserType(userType)
+
+  router.getRoutes().forEach(route => {
+    router.removeRoute(route.name)
+  })
+
+  routes.forEach(route => {
+    router.addRoute(route)
+  })
+}
+
+const initialUserType = +localStorage.getItem('type') || 1
+updateRouterRoutes(+initialUserType)
 
 router.beforeEach((to, from, next) => {
   const isAuthenticated = localStorage.getItem('token') && localStorage.getItem('id')
-  if (to.meta.requiresAuth && !isAuthenticated) {
-    next('/registration/login')
-  } else if (to.path === '/manual-document' && !to.query.userId && from.query.userId) {
-    next({ path: to.path, query: { userId: from.query.userId } })
-  } else {
-    next()
+  const currentUserType = +localStorage.getItem('type')
+
+  if (to.matched.length === 0 && isAuthenticated) {
+    updateRouterRoutes(currentUserType)
+    return next(to.fullPath)
   }
+
+  if (!currentUserType && to.path !== '/registration/login') {
+    return next('/registration/login')
+  }
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    return next('/registration/login')
+  }
+  if (to.path === '/manual-document' && !to.query.userId && from.query.userId) {
+    return next({ path: to.path, query: { userId: from.query.userId } })
+  }
+  if (isAuthenticated && to.path === '/') {
+    return next(currentUserType === 4 ? '/customer-trade' : '/trade')
+  }
+
+  next()
 })
 
 export default router
